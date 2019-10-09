@@ -9,6 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="This fragments is responsible for showing the users event, either the ones he is
+about to attend or the ones he has created himself" />
 
 </FrameLayout>

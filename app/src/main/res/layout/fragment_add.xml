@@ -9,6 +9,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="The add fragment" />
+        android:text="This fragment is responsible for the add event description. The fragment will
+        contain a input scheme containing the different input fields
+        - What
+        - For whom
+        - When
+        - Location" />
 
 </FrameLayout>

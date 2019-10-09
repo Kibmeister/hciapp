@@ -9,6 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="The map fragment" />
+        android:text="This fragment will display our map where the user can se his
+own location and the different events nearby" />
 
 </FrameLayout>

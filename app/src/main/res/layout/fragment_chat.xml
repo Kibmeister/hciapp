@@ -9,6 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="This fragment is responsible for handling the chat functionality
+        for our app. Communicate back and forth with the specific connected person you are in touch with" />
 
 </FrameLayout>

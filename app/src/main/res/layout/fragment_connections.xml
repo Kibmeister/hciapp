@@ -9,6 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="This fragment is responsible for handling the connections overview
+for the specific person. Displayed in a decending order by who is closes by" />
 
 </FrameLayout>
