@@ -18,15 +18,13 @@ import android.widget.Button;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements View.OnClickListener {
 
 
     public ProfileFragment() {
         // Required empty public constructor
     }
 
-    NavController navController = new NavController(null);
-    Button settingsButton;
 
 
     @Override
@@ -39,19 +37,16 @@ public class ProfileFragment extends Fragment {
         return v;
     }
 
-    /* public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        navController = Navigation.findNavController(view);
-        settingsButton = view.findViewById(R.id.settingsButton);
-
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                navController.navigate(R.id.action_profileFragment_to_settingsFragment);
-            }
-        });
+        Button settingsButton = view.findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(this);
     }
-    */
+
+    @Override
+    public void onClick(View v) {
+        Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_settingsFragment);
+    }
 }
