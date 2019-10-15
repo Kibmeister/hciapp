@@ -9,10 +9,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-<<<<<<< HEAD
         android:text="This fragment is responsible for changing the settings of the app" />
-=======
-        android:text="The settings fragment" />
->>>>>>> 9a44254192b4adef81ebd88b7f13557ace7b500b
 
 </FrameLayout>
