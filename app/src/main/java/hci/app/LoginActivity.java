@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Check if a user is already signed in
+        // Check if a user is already signed in, and launch the app if this is true
         try {
             Thread.sleep(1000);
             AccessToken accessToken = AccessToken.getCurrentAccessToken();
