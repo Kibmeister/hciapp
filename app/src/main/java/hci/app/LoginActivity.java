@@ -11,7 +11,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-
 import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
@@ -26,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         loginButton = findViewById(R.id.fblogin_button);
-        loginButton.setReadPermissions(Arrays.asList("public_profile","email"));
+        loginButton.setPermissions("public_profile");
         callbackManager = CallbackManager.Factory.create();
 
         Intent MainIntent = new Intent(LoginActivity.this, MainActivity.class);

@@ -37,16 +37,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="hci.app.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
-    </fragment>
-
-    <fragment
         android:id="@+id/chatFragment"
         android:name="hci.app.ChatFragment"
         android:label="fragment_chat"
