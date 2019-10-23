@@ -58,8 +58,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Load user profile data
         loadUserData();
 
+        // Set button onClickListeners
         Button settingsButton = view.findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(this);
     }
@@ -71,6 +73,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    // Loads user profile data from facebook graph API
     private void loadUserData() {
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
@@ -78,6 +81,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         try {
+                            // Save response as variables and render user image and user name
                             String name = object.getString("name");
                             String id = object.getString("id");
                             String imageUrl = "https://graph.facebook.com/"+id+"/picture?type=large";
@@ -85,6 +89,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             textName.setText(name);
                             Picasso.get().load(imageUrl).into(profileImage);
                         } catch (JSONException e) {
+                            // Catch facebook exception
                             e.printStackTrace();
                         }
                     }

@@ -2,6 +2,7 @@ package hci.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,12 +12,10 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginButton loginButton;
-
     private CallbackManager callbackManager;
 
     @Override
@@ -40,12 +39,12 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                System.out.println("Login cancelled");
+                Toast.makeText(getApplicationContext(), "Login cancelled", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onError(FacebookException error) {
-                System.out.println("Login failed");
+                Toast.makeText(getApplicationContext(), "An error occured while logging in", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -54,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
             Thread.sleep(1000);
             AccessToken accessToken = AccessToken.getCurrentAccessToken();
             boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+            // If the user is logged in, redirect to the main screen
             if (isLoggedIn) {
                 startActivity(MainIntent);
             }
