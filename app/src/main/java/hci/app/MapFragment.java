@@ -1,17 +1,14 @@
 package hci.app;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,7 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
 
     public MapFragment() {
@@ -57,7 +54,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         setMapLongClick(mMap);
-        mMap.setOnMarkerClickListener(this);
+        mMap.setOnInfoWindowClickListener(this);
     }
 
     // Save temporary marker as variable
@@ -79,8 +76,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     @Override
-    public boolean onMarkerClick(final Marker marker) {
-        Toast.makeText(getContext(), "Marker clicked", Toast.LENGTH_LONG).show();
-        return false;
+    public void onInfoWindowClick(Marker marker) {
+
+        // Open add fragment and pass the location as parameter
+        // Execution inspired partly by https://stackoverflow.com/a/40949016
+
+        LatLng location = marker.getPosition();
+        Bundle bundle = new Bundle();
+        bundle.putDouble("latitude", location.latitude);
+        bundle.putDouble("longitude", location.longitude);
+        AddFragment addFragment = new AddFragment();
+        addFragment.setArguments(bundle);
+
+        if (getFragmentManager() != null) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.nav_host_fragment, addFragment)
+                    .commit();
+        } else {
+            Toast.makeText(getContext(), "An error occured", Toast.LENGTH_LONG).show();
+        }
     }
 }
