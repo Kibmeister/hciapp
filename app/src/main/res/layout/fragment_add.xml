@@ -42,4 +42,12 @@
         -->
 
 
+    <Button
+        android:id="@+id/event_submit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="10mm"
+        android:text="Submit" />
+
 </FrameLayout>
