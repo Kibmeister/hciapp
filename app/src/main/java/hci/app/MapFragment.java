@@ -1,29 +1,32 @@
 package hci.app;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.common.api.internal.GoogleApiManager;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.*;
+import com.google.android.gms.tasks.Task;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback,
+        GoogleMap.OnInfoWindowClickListener {
 
 
     public MapFragment() {
@@ -31,6 +34,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     private SupportMapFragment map;
+
+
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 42;
+    private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,27 +48,53 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         map = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         map.getMapAsync(this);
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.getActivity());
+
         return v;
     }
 
     @Override
     public void onMapReady(GoogleMap mMap) {
-        System.out.println("Map ready, placing marker");
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        requestLocationPermissions(mMap);
 
         setMapLongClick(mMap);
         mMap.setOnInfoWindowClickListener(this);
     }
 
+    private void requestLocationPermissions(GoogleMap mMap) {
+        // Check if permission is granted
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        }
+        // Request the permission if it's not granted
+        else {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch(requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // Reload fragment if permission was granted
+                if ( grantResults[0] != PackageManager.PERMISSION_GRANTED ) {
+                    getActivity().finish();
+                    startActivity(getActivity().getIntent());
+                }
+            }
+        }
+    }
+
+
     // Save temporary marker as variable
     private Marker marker;
 
-    public void setMapLongClick(final GoogleMap map) {
-        map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+
+    public void setMapLongClick(final GoogleMap mMap) {
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
 
             public void onMapLongClick(LatLng latLng) {
@@ -69,7 +102,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     marker.remove();
                 }
 
-                marker = map.addMarker(new MarkerOptions().position(latLng)
+                marker = mMap.addMarker(new MarkerOptions().position(latLng)
                         .title("Create new event here?"));
             }
         });
@@ -97,4 +130,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             Toast.makeText(getContext(), "An error occured", Toast.LENGTH_LONG).show();
         }
     }
+
 }
