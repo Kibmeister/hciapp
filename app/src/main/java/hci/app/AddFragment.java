@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -46,7 +47,6 @@ public class AddFragment extends Fragment {
         // TODO: addFragment XML, adding implementation
 
         // Assume view was created from a marker on the map and has a bundle with location information
-        // TODO: Call createEventAtLocation with values inserted in addFragment fields
 
         submit_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,12 +56,21 @@ public class AddFragment extends Fragment {
         });
     }
 
-    public void createEventAtLocation() {
+    private void createEventAtLocation() {
 
         JSONObject eventJSON = new JSONObject();
+        Double latitude, longitude;
 
-        Double latitude = this.getArguments().getDouble("latitude");
-        Double longitude = this.getArguments().getDouble("longitude");
+        // prevent getArguments() NullPointerException
+        if (this.getArguments() != null) {
+            latitude = this.getArguments().getDouble("latitude");
+            longitude = this.getArguments().getDouble("longitude");
+        } else {
+            Toast.makeText(getContext(), "Error occured while submitting event", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Add event information to the JSON object and send it to the database class
         try {
             eventJSON.put("latitude", latitude);
             eventJSON.put("longitude", longitude);

@@ -95,6 +95,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     }
                 }
         );
+
         Bundle parameters = new Bundle();
         parameters.putString("fields", "id,name");
         request.setParameters(parameters);
