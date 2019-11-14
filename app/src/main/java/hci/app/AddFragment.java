@@ -45,5 +45,4 @@ public class AddFragment extends Fragment {
     public void createEventAtLocation(double latitude, double longitude) {
         System.out.println("Creating new event at: " + latitude + ", " + longitude);
     }
-
 }

@@ -31,12 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setPermissions("public_profile");
         callbackManager = CallbackManager.Factory.create();
 
-        Intent MainIntent = new Intent(LoginActivity.this, MainActivity.class);
-
-        while (AccessToken.getCurrentAccessToken() != null) {
-            System.out.println(LoginManager.getInstance());
-            startActivity(MainIntent);
-        }
+        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -64,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
             boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
             // If the user is logged in, redirect to the main screen
             if (isLoggedIn) {
-                startActivity(MainIntent);
+                startActivity(mainIntent);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
