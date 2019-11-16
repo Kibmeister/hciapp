@@ -3,6 +3,7 @@ package hci.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.facebook.login.widget.LoginButton;
 public class LoginActivity extends AppCompatActivity {
 
     private LoginButton loginButton;
+    private Button loginButtonFacade;
     private CallbackManager callbackManager;
 
     @Override
@@ -27,8 +29,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        loginButton = findViewById(R.id.fblogin_button);
+        loginButton = findViewById(R.id.bt_facebook);
         loginButton.setPermissions("public_profile");
+        loginButtonFacade = findViewById(R.id.bt_facebookCustom);
+
         callbackManager = CallbackManager.Factory.create();
 
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
@@ -63,6 +67,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+    public void onClick(View v) {
+        if (v == loginButtonFacade) {
+            loginButton.performClick();
         }
     }
 

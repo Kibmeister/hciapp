@@ -36,7 +36,7 @@ public class AddFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_add, container, false);
 
-        submit_button = v.findViewById(R.id.event_submit_button);
+        submit_button = v.findViewById(R.id.btn_createEvent);
         // Inflate the layout for this fragment
         return v;
     }

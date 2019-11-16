@@ -1,53 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddFragment"
-    android:background="#E3E3E3">
-
-    <!-- TODO: Update blank fragment layout -->
-
-    <TextView
-        android:id="@+id/addEventHeader"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:text="Lets get you started with creating an event"
-        android:textSize="20sp"
-        android:visibility="visible" />
+    android:background="#E3E3E3"
+    tools:context=".AddFragment">
 
 
-    <EditText
-        android:layout_width="300dp"
-        android:layout_height="45dp"
-        android:layout_gravity="center"
-        android:background="@drawable/input_edittext"
-        android:hint="Fill in event description"
-        android:textAlignment="center"
-        android:textColorHint="#FFFFFF" />
-
-
-    <!--
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="hint" />
-        </com.google.android.material.textfield.TextInputLayout>
-        -->
-
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="263dp"
+        android:layout_height="49dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="52dp"
+        android:src="@drawable/headertext"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/event_submit_button"
+        android:id="@+id/btn_createEvent"
+        android:layout_width="137dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="44dp"
+        android:background="@drawable/create_event"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_txt_eventdescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="10mm"
-        android:text="Submit" />
+        android:background="@drawable/event_description"
+        android:ellipsize="start"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:hint="Fill in an event description"
+        android:inputType="textPersonName"
+        android:textColorHint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.481"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.217" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/edit_txt_targetgroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/whois_the_event_for"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:hint="Who is the event for?"
+        android:inputType="textPersonName"
+        android:textColorHint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.517" />
+
+    <Button
+        android:id="@+id/btn_location"
+        android:layout_width="296dp"
+        android:layout_height="47dp"
+        android:background="@drawable/event_location"
+        android:text="Input your location"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.628" />
+
+    <ImageView
+        android:id="@+id/imageView_numberOfPeople"
+        android:layout_width="159dp"
+        android:layout_height="37dp"
+        android:src="@drawable/number_of_atendees"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_location"
+        app:layout_constraintVertical_bias="0.124" />
+
+    <EditText
+        android:id="@+id/time_end"
+        android:layout_width="99dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="84dp"
+        android:ems="10"
+        android:inputType="date"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/time_start"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.395" />
+
+    <EditText
+        android:id="@+id/time_start"
+        android:layout_width="99dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="212dp"
+        android:ems="10"
+        android:inputType="date"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.395" />
+
+    <TextView
+        android:id="@+id/txt_dateEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="41dp"
+        android:layout_marginBottom="20dp"
+        android:text="To"
+        app:layout_constraintBottom_toTopOf="@+id/time_end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.419"
+        app:layout_constraintStart_toEndOf="@+id/txt_startdate"
+        app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription" />
+
+    <TextView
+        android:id="@+id/txt_startdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginBottom="21dp"
+        android:text="From"
+        app:layout_constraintBottom_toTopOf="@+id/time_start"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

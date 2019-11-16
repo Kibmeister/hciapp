@@ -7,5 +7,7 @@
     <string name="facebook_app_id">433745980828744</string>
     <string name="fb_login_protocol_scheme">fb433745980828744</string>
     <string name="title_activity_map">Map</string>
+    <string name="facebookButton">FACEBOOK</string>
+    <string name="emailButton">EMAIL</string>
 
 </resources>
