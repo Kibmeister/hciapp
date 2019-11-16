@@ -18,6 +18,9 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +61,7 @@ public class AddFragment extends Fragment {
 
     private void createEventAtLocation() {
 
-        JSONObject eventJSON = new JSONObject();
+        Map<String, Object> eventMap = new HashMap<>();
         Double latitude, longitude;
 
         // prevent getArguments() NullPointerException
@@ -70,14 +73,10 @@ public class AddFragment extends Fragment {
             return;
         }
 
-        // Add event information to the JSON object and send it to the database class
-        try {
-            eventJSON.put("latitude", latitude);
-            eventJSON.put("longitude", longitude);
-        } catch (org.json.JSONException e) {
-            e.printStackTrace();
-        }
+        // Add event information to the Map object and send it to the database class
+        eventMap.put("latitude", latitude);
+        eventMap.put("longitude", longitude);
 
-        Database.storeEvent(eventJSON);
+        Database.storeEvent(eventMap);
     }
 }

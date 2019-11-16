@@ -22,6 +22,11 @@ import com.google.android.gms.maps.model.*;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONObject;
+
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,6 +77,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 10));
             }
         });
+
+        loadEvents(mMap);
     }
 
     private void requestLocationPermissions(GoogleMap mMap) {
@@ -100,6 +107,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
+    private void loadEvents(GoogleMap mMap) {
+        List<Map<String, Object>> events = Database.getEvents();
+
+        for (Map o : events) {
+            //TODO: Add each event to map as custom markers
+        }
+    }
 
     // Save temporary marker as variable
     private Marker marker;

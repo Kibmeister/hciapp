@@ -85,7 +85,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             String name = object.getString("name");
                             String id = object.getString("id");
                             String imageUrl = "https://graph.facebook.com/"+id+"/picture?type=large";
-
+                            System.out.println("id: " + id);
                             textName.setText(name);
                             Picasso.get().load(imageUrl).into(profileImage);
                         } catch (JSONException e) {
