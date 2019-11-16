@@ -19,6 +19,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 
@@ -38,6 +39,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 42;
     private FusedLocationProviderClient fusedLocationClient;
+    private LatLng currentLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,12 +56,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     @Override
-    public void onMapReady(GoogleMap mMap) {
+    public void onMapReady(final GoogleMap mMap) {
+        System.out.println("onMapReady()");
 
         requestLocationPermissions(mMap);
 
         setMapLongClick(mMap);
         mMap.setOnInfoWindowClickListener(this);
+
+        Task<Location> task = fusedLocationClient.getLastLocation();
+        task.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 10));
+            }
+        });
     }
 
     private void requestLocationPermissions(GoogleMap mMap) {
