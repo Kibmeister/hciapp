@@ -127,21 +127,28 @@
         android:text="To"
         app:layout_constraintBottom_toTopOf="@+id/time_end"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.419"
+        app:layout_constraintHorizontal_bias="0.388"
         app:layout_constraintStart_toEndOf="@+id/txt_startdate"
-        app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/txt_startdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="124dp"
+        android:layout_marginStart="136dp"
         android:layout_marginTop="41dp"
         android:layout_marginBottom="21dp"
         android:text="From"
         app:layout_constraintBottom_toTopOf="@+id/time_start"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.yourpackage.HorizontalNumberPicker
+        android:id="@+id/np_channel_nr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
