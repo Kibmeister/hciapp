@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -21,6 +22,11 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONObject;
 
@@ -45,6 +51,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 42;
     private FusedLocationProviderClient fusedLocationClient;
     private LatLng currentLocation;
+
+    DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,10 +104,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch(requestCode) {
+        switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
                 // Reload fragment if permission was granted
-                if ( grantResults[0] != PackageManager.PERMISSION_GRANTED ) {
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     getActivity().finish();
                     startActivity(getActivity().getIntent());
                 }
@@ -107,12 +115,36 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-    private void loadEvents(GoogleMap mMap) {
-        List<Map<String, Object>> events = Database.getEvents();
 
-        for (Map o : events) {
-            //TODO: Add each event to map as custom markers
-        }
+    /**
+     * Code found on https://stackoverflow.com/a/49739813
+     * <p>
+     * Adds all markers from the database to the map overview.
+     *
+     * @param mMap: Map variable for adding event pins to the map
+     */
+    private void loadEvents(final GoogleMap mMap) {
+        eventsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    if (data != null) {
+                        Marker marker;
+                        MarkerOptions markerOptions = new MarkerOptions()
+                                .position(new LatLng(
+                                        Double.valueOf(data.child("latitude").getValue().toString()),
+                                        Double.valueOf(data.child("longitude").getValue().toString())))
+                                .title(data.child("eventHeader").getValue().toString());
+                        marker = mMap.addMarker(markerOptions);
+                        marker.setTag(data.getKey());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 
     // Save temporary marker as variable
@@ -129,7 +161,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 }
 
                 marker = mMap.addMarker(new MarkerOptions().position(latLng)
+                        .snippet("Custom Marker")
                         .title("Create new event here?"));
+                marker.setTag("Custom Marker");
             }
         });
     }
@@ -137,24 +171,33 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onInfoWindowClick(Marker marker) {
 
-        // Open add fragment and pass the location as parameter
-        // Execution inspired partly by https://stackoverflow.com/a/40949016
+        if (marker.getTag().equals("Custom Marker")) {
+            // Custom marker is pressed, send to Add Event page
 
-        LatLng location = marker.getPosition();
-        Bundle bundle = new Bundle();
-        bundle.putDouble("latitude", location.latitude);
-        bundle.putDouble("longitude", location.longitude);
-        AddFragment addFragment = new AddFragment();
-        addFragment.setArguments(bundle);
+            // Open add fragment and pass the location as parameter
+            // Execution inspired partly by https://stackoverflow.com/a/40949016
 
-        if (getFragmentManager() != null) {
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.nav_host_fragment, addFragment)
-                    .commit();
+            LatLng location = marker.getPosition();
+            Bundle bundle = new Bundle();
+            bundle.putDouble("latitude", location.latitude);
+            bundle.putDouble("longitude", location.longitude);
+            AddFragment addFragment = new AddFragment();
+            addFragment.setArguments(bundle);
+
+            if (getFragmentManager() != null) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.nav_host_fragment, addFragment)
+                        .commit();
+            } else {
+                Toast.makeText(getContext(), "An error occured", Toast.LENGTH_LONG).show();
+            }
         } else {
-            Toast.makeText(getContext(), "An error occured", Toast.LENGTH_LONG).show();
+            // Event marker is pressed, send to event description page
+
+            // TODO: Implement event description page loading with event id.
+            System.out.println("Event Marker pressed!");
+            Toast.makeText(getContext(), marker.getTag().toString(), Toast.LENGTH_LONG).show();
         }
     }
-
 }

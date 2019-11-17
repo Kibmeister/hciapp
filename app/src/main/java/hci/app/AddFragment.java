@@ -11,14 +11,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -35,14 +44,19 @@ public class AddFragment extends Fragment {
     }
 
 
+    View v;
 
+    EditText event_description;
+    HorizontalNumberPicker attendeeLimit;
     private Button submit_button;
+
+    DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_add, container, false);
+        v = inflater.inflate(R.layout.fragment_add, container, false);
 
         submit_button = v.findViewById(R.id.btn_createEvent);
 
@@ -68,7 +82,12 @@ public class AddFragment extends Fragment {
                 createEventAtLocation();
             }
         });
+
+        event_description = v.findViewById(R.id.edit_txt_eventdescription);
+        attendeeLimit = v.findViewById(R.id.np_channel_nr);
     }
+
+
 
     private void createEventAtLocation() {
 
@@ -87,7 +106,17 @@ public class AddFragment extends Fragment {
         // Add event information to the Map object and send it to the database class
         eventMap.put("latitude", latitude);
         eventMap.put("longitude", longitude);
+        eventMap.put("hostId", Profile.getCurrentProfile().getId());
+        List<String> attendeeIds = new ArrayList<>();
+        eventMap.put("attendeeIds", attendeeIds.toString()); // TODO: Cant push lists to database ?
+        eventMap.put("attendeeLimit", attendeeLimit.getValue());
+        eventMap.put("eventDescription", event_description.getText());
+        eventMap.put("eventHeader", "Event Header");
+        eventMap.put("timestamp", 1576188000);
 
-        Database.storeEvent(eventMap);
+        System.out.println(eventMap);
+
+        String eventKey = eventsRef.push().getKey();
+        eventsRef.child(eventKey).setValue(eventMap);
     }
 }
