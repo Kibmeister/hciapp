@@ -56,7 +56,10 @@ public class HorizontalNumberPicker extends LinearLayout {
             } else if (newValue > max) {
                 newValue = max;
             }
+            setValue(newValue);
             et_number.setText(String.valueOf(newValue));
+            System.out.println(newValue);
+
         }
     }
 

@@ -26,11 +26,15 @@ import java.util.Map;
  * A simple {@link Fragment} subclass.
  */
 public class AddFragment extends Fragment {
+    // get a reference to the component
+
 
 
     public AddFragment() {
         // Required empty public constructor
     }
+
+
 
     private Button submit_button;
 
@@ -41,6 +45,13 @@ public class AddFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_add, container, false);
 
         submit_button = v.findViewById(R.id.btn_createEvent);
+
+        final HorizontalNumberPicker np_channel_nr = v.findViewById(R.id.np_channel_nr);
+        // use value in your code
+        final int nr = np_channel_nr.getValue();
+
+        System.out.println("max value input" + nr);
+
         // Inflate the layout for this fragment
         return v;
     }
