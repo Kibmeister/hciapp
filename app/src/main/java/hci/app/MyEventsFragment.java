@@ -11,7 +11,10 @@ import android.view.ViewGroup;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * MyEventsFragment class: Calendar-like display of events the user is attending.
+ *
+ * @author Frederik Andersen
+ * @author Kasper Borgbjerg
  */
 public class MyEventsFragment extends Fragment {
 

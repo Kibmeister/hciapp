@@ -29,7 +29,11 @@ import org.w3c.dom.Text;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * ProfileFragment class: Loads user information from facebook, and displays it.
+ *
+ * Graph code fragments found on: https://developers.facebook.com/docs/facebook-login/android
+ *
+ * @author Frederik Andersen
  */
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
@@ -84,10 +88,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             // Save response as variables and render user image and user name
                             String name = object.getString("name");
                             String id = object.getString("id");
-                            String imageUrl = "https://graph.facebook.com/"+id+"/picture?type=large";
+                            String imageUrl;
+                            imageUrl = "https://graph.facebook.com/"+id+"/picture?type=large";
                             System.out.println("id: " + id);
                             textName.setText(name);
-                            Picasso.get().load(imageUrl).into(profileImage);
+                            if (profileImage != null) {
+                            Picasso.get().load(imageUrl).into(profileImage); }
                         } catch (JSONException e) {
                             // Catch facebook exception
                             e.printStackTrace();

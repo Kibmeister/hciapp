@@ -16,7 +16,7 @@ import com.facebook.login.LoginManager;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * SettingsFragment: Currently only responsible for logging out the user and send him to the main screen
  */
 public class SettingsFragment extends Fragment {
 

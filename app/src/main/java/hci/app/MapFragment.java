@@ -35,7 +35,13 @@ import java.util.Map;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * MapFragment class: Responsible for displaying the map, events, location
+ * and provides navigation to several other fragments.
+ *
+ * Much of the code here depends on Googles Map API, and has been found here:
+ * https://developers.google.com/maps/documentation/android-sdk/
+ *
+ * @author Frederik Andersen
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnInfoWindowClickListener {
@@ -89,6 +95,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         loadEvents(mMap);
     }
 
+    // Request the user for location permissions
     private void requestLocationPermissions(GoogleMap mMap) {
         // Check if permission is granted
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -102,6 +109,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
+    // Check location permission request callback to see if permissions were granted
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -151,6 +159,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private Marker marker;
 
 
+    // Set map long click to enable the user to place a pin where he wants to add an event
     public void setMapLongClick(final GoogleMap mMap) {
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
@@ -168,6 +177,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         });
     }
 
+    // Adds onClickListener on the info windows to each marker.
     @Override
     public void onInfoWindowClick(Marker marker) {
 

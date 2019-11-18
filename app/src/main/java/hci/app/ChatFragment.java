@@ -11,7 +11,12 @@ import android.view.ViewGroup;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * ChatFragment class
+ *
+ * Responsible for displaying a chat the user has with one specific other user.
+ *
+ * @author Frederik Andersen
+ * @author Kasper Borgbjerg
  */
 public class ChatFragment extends Fragment {
 

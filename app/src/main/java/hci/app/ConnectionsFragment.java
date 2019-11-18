@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * ConnectionsFragment
+ *
+ * Responsible for displaying a list of all users the user has active chats with.
  */
 public class ConnectionsFragment extends Fragment {
 

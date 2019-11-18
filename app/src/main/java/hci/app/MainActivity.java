@@ -11,6 +11,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 
+/**
+ * MainActivity class: Responsible for displaying the bottom navigation bar.
+ *
+ * @author Frederik Andersen
+ * @author Kasper Borgbjerg
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

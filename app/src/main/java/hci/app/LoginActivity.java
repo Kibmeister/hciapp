@@ -18,6 +18,13 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+/**
+ * LoginActivity class: Requires the user to sign in to facebook before entering the app.
+ * Many code fragments have been found in facebooks API library: https://developers.facebook.com/docs/facebook-login/android
+ *
+ * @author Frederik Andersen
+ */
+
 public class LoginActivity extends AppCompatActivity {
 
     private LoginButton loginButton;
@@ -37,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
 
+        // Register facebook callback
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {

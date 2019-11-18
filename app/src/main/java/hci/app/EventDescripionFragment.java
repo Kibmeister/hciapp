@@ -11,7 +11,10 @@ import android.view.ViewGroup;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * EventDescriptionFragment class: Responsible for displaying information about specific events to the user.
+ *
+ * @author Frederik Andersen
+ * @author Kasper Borgbjerg
  */
 public class EventDescripionFragment extends Fragment {
 

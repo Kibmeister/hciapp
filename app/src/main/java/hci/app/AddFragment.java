@@ -32,8 +32,20 @@ import java.util.Map;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * AddFragment class:
+ *
+ * Responsible for adding data for newly created events to the database
+ * Can only be called from pressing custom markers on the map.
+ * Displays a form where the user can input data, and should verify user input
+ * before sending data to the database.
+ *
+ * @author Frederik Andersen
+ * @author Kasper Borgbjerg
  */
+
+// TODO: Verify FORM data
+
+
 public class AddFragment extends Fragment {
     // get a reference to the component
 
@@ -60,20 +72,12 @@ public class AddFragment extends Fragment {
 
         submit_button = v.findViewById(R.id.btn_createEvent);
 
-        final HorizontalNumberPicker np_channel_nr = v.findViewById(R.id.np_channel_nr);
-        // use value in your code
-        final int nr = np_channel_nr.getValue();
-
-        System.out.println("max value input" + nr);
-
         // Inflate the layout for this fragment
         return v;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable final Bundle savedInstanceState) {
-        // TODO: addFragment XML, adding implementation
-
         // Assume view was created from a marker on the map and has a bundle with location information
 
         submit_button.setOnClickListener(new View.OnClickListener() {
@@ -87,8 +91,9 @@ public class AddFragment extends Fragment {
         attendeeLimit = v.findViewById(R.id.np_channel_nr);
     }
 
-
-
+    /**
+     * Responsible for sending the form information to the database.
+     */
     private void createEventAtLocation() {
 
         Map<String, Object> eventMap = new HashMap<>();
@@ -108,7 +113,7 @@ public class AddFragment extends Fragment {
         eventMap.put("longitude", longitude);
         eventMap.put("hostId", Profile.getCurrentProfile().getId());
         List<String> attendeeIds = new ArrayList<>();
-        eventMap.put("attendeeIds", attendeeIds.toString()); // TODO: Cant push lists to database ?
+        // eventMap.put("attendeeIds", attendeeIds.toString()); // TODO: Cant push lists to database, needs workaround
         eventMap.put("attendeeLimit", attendeeLimit.getValue());
         eventMap.put("eventDescription", event_description.getText());
         eventMap.put("eventHeader", "Event Header");
@@ -119,7 +124,6 @@ public class AddFragment extends Fragment {
         String eventKey = eventsRef.push().getKey();
         eventsRef.child(eventKey).setValue(eventMap);
 
-        
     }
 
 }
