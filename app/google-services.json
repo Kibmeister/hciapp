@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "378266882602",
+    "firebase_url": "https://elite-striker-253821.firebaseio.com",
+    "project_id": "elite-striker-253821",
+    "storage_bucket": "elite-striker-253821.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378266882602:android:a13809038e3de899962953",
+        "android_client_info": {
+          "package_name": "hci.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378266882602-6ie0e4v3jine3b0q83pr39deqj25d7pq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhDaHSb5101kAp-T3u6yXf5fatLJhgWME"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378266882602-6ie0e4v3jine3b0q83pr39deqj25d7pq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

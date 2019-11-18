@@ -118,5 +118,8 @@ public class AddFragment extends Fragment {
 
         String eventKey = eventsRef.push().getKey();
         eventsRef.child(eventKey).setValue(eventMap);
+
+        
     }
+
 }
