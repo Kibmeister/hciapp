@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -30,7 +31,7 @@ import org.w3c.dom.Text;
 
 /**
  * ProfileFragment class: Loads user information from facebook, and displays it.
- *
+ * <p>
  * Graph code fragments found on: https://developers.facebook.com/docs/facebook-login/android
  *
  * @author Frederik Andersen
@@ -72,39 +73,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v.getId()==R.id.settingsButton) {
+        if (v.getId() == R.id.settingsButton) {
             Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_settingsFragment);
         }
     }
 
     // Loads user profile data from facebook graph API
     private void loadUserData() {
-        GraphRequest request = GraphRequest.newMeRequest(
-                AccessToken.getCurrentAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        try {
-                            // Save response as variables and render user image and user name
-                            String name = object.getString("name");
-                            String id = object.getString("id");
-                            String imageUrl;
-                            imageUrl = "https://graph.facebook.com/"+id+"/picture?type=large";
-                            System.out.println("id: " + id);
-                            textName.setText(name);
-                            if (profileImage != null) {
-                            Picasso.get().load(imageUrl).into(profileImage); }
-                        } catch (JSONException e) {
-                            // Catch facebook exception
-                            e.printStackTrace();
-                        }
-                    }
-                }
-        );
-
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name");
-        request.setParameters(parameters);
-        request.executeAsync();
+        String name = Profile.getCurrentProfile().getName();
+        String id = Profile.getCurrentProfile().getId();
+        String imageUrl;
+        imageUrl = "https://graph.facebook.com/" + id + "/picture?type=large";
+        textName.setText(name);
+        if (profileImage != null) {
+            Picasso.get().load(imageUrl).into(profileImage);
+        }
     }
 }
