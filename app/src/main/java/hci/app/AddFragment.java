@@ -89,6 +89,8 @@ public class AddFragment extends Fragment {
 
         event_description = v.findViewById(R.id.edit_txt_eventdescription);
         attendeeLimit = v.findViewById(R.id.np_channel_nr);
+        attendeeLimit.setMin(1);
+        attendeeLimit.setMax(8);
     }
 
     /**
