@@ -74,6 +74,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.settingsButton) {
+            System.out.println("Settings fragment");
             Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_settingsFragment);
         }
     }

@@ -51,6 +51,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddFragment"></activity>
+        <activity android:name=".DateAndTimePicker"></activity>
+
     </application>
 
 </manifest>

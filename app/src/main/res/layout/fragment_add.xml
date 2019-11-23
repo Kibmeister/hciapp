@@ -93,57 +93,9 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_location"
         app:layout_constraintVertical_bias="0.124" />
 
-    <EditText
-        android:id="@+id/time_end"
-        android:layout_width="99dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="84dp"
-        android:ems="10"
-        android:inputType="date"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/time_start"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.395" />
 
-    <EditText
-        android:id="@+id/time_start"
-        android:layout_width="99dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="212dp"
-        android:ems="10"
-        android:inputType="date"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.395" />
 
-    <TextView
-        android:id="@+id/txt_dateEnd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="41dp"
-        android:layout_marginBottom="20dp"
-        android:text="To"
-        app:layout_constraintBottom_toTopOf="@+id/time_end"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.388"
-        app:layout_constraintStart_toEndOf="@+id/txt_startdate"
-        app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription"
-        app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/txt_startdate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="41dp"
-        android:layout_marginBottom="21dp"
-        android:text="From"
-        app:layout_constraintBottom_toTopOf="@+id/time_start"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription"
-        app:layout_constraintVertical_bias="0.0" />
 
     <hci.app.HorizontalNumberPicker
         android:id="@+id/np_channel_nr"
@@ -154,6 +106,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_numberOfPeople"
         app:layout_constraintVertical_bias="0.48" />
+
+    <Button
+        android:id="@+id/btn_timeStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="57dp"
+        android:text="START TIME"
+        app:layout_constraintBottom_toTopOf="@+id/edit_txt_targetgroup"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btn_timeEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="57dp"
+        android:text="END TIME"
+        app:layout_constraintBottom_toTopOf="@+id/edit_txt_targetgroup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/btn_timeStart"
+        app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,7 +9,12 @@
         android:id="@+id/addFragment"
         android:name="hci.app.AddFragment"
         android:label="fragment_add"
-        tools:layout="@layout/fragment_add" />
+        tools:layout="@layout/fragment_add" >
+        <action
+            android:id="@+id/action_addFragment_to_dateAndTimePicker2"
+            app:destination="@id/dateAndTimePicker" />
+    </fragment>
+
     <fragment
         android:id="@+id/mapFragment"
         android:name="hci.app.MapFragment"
@@ -75,4 +80,9 @@
         android:name="hci.app.EventDescripionFragment"
         android:label="fragment_event_descripion"
         tools:layout="@layout/fragment_event_descripion" />
+    <activity
+        android:id="@+id/dateAndTimePicker"
+        android:name="hci.app.DateAndTimePicker"
+        android:label="fragment_add_start_time"
+        tools:layout="@layout/fragment_add_start_time" />
 </navigation>

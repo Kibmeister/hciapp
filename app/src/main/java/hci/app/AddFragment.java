@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.SyncFailedException;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +48,7 @@ import java.util.Map;
 // TODO: Verify FORM data
 
 
-public class AddFragment extends Fragment {
+public class AddFragment extends Fragment implements View.OnClickListener {
     // get a reference to the component
 
 
@@ -60,7 +62,7 @@ public class AddFragment extends Fragment {
 
     EditText event_description;
     HorizontalNumberPicker attendeeLimit;
-    private Button submit_button;
+    private Button submit_button, buttonTimeStart, buttonTimeEnd;
 
     DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
 
@@ -71,6 +73,8 @@ public class AddFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_add, container, false);
 
         submit_button = v.findViewById(R.id.btn_createEvent);
+        buttonTimeStart = v.findViewById(R.id.btn_timeStart);
+        buttonTimeEnd = v.findViewById(R.id.btn_timeEnd);
 
         // Inflate the layout for this fragment
         return v;
@@ -91,7 +95,19 @@ public class AddFragment extends Fragment {
         attendeeLimit = v.findViewById(R.id.np_channel_nr);
         attendeeLimit.setMin(1);
         attendeeLimit.setMax(8);
+
+       buttonTimeStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("tada");
+                Navigation.findNavController(v).navigate(R.id.action_addFragment_to_dateAndTimePicker2);
+            }
+        });
+
+        //buttonTimeStart.setOnClickListener(this);
+
     }
+
 
     /**
      * Responsible for sending the form information to the database.
@@ -128,4 +144,11 @@ public class AddFragment extends Fragment {
 
     }
 
+    @Override
+    public void onClick(View view) {
+       /*if (v.getId() == R.id.btn_timeStart) {
+            System.out.println("Time start button");
+            Navigation.findNavController(v).navigate(R.id.action_addFragment_to_dateAndTimePicker2);
+        }*/
+    }
 }
