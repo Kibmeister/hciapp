@@ -3,6 +3,7 @@ package hci.app;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
@@ -17,21 +18,23 @@ import java.util.Locale;
 public class DateAndTimePicker extends AppCompatActivity  {
 
 
-    private SimpleDateFormat mSimpleDateFormat;
+    private SimpleDateFormat mSimpleDateFormat, mSimpleDateFormatEnd;
     private Calendar mCalendar;
     private Activity mActivity;
-    private TextView mDate;
+    private TextView mDate, mDateEnd;
 
     /* Set up view, variables, and OnClickListener */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_add_start_time);
-
         mActivity = this;
         mSimpleDateFormat = new SimpleDateFormat("dd/MM/yyyy h:mm a", Locale.getDefault());
+        mSimpleDateFormatEnd = new SimpleDateFormat("dd/MM/yyy h:mm a", Locale.getDefault());
         mDate = (TextView) findViewById(R.id.contentMain);
+        mDateEnd = (TextView) findViewById(R.id.contentMain2);
         mDate.setOnClickListener(textListener);
+        mDateEnd.setOnClickListener(textListener);
     }
 
     /* Define the onClickListener, and start the DatePickerDialog with users current time */
@@ -62,6 +65,7 @@ public class DateAndTimePicker extends AppCompatActivity  {
             mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
             mCalendar.set(Calendar.MINUTE, minute);
             mDate.setText(mSimpleDateFormat.format(mCalendar.getTime()));
+            mDateEnd.setText(mSimpleDateFormat.format(mCalendar.getTime()));
         }
     };
 

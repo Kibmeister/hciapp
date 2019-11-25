@@ -104,6 +104,14 @@ public class AddFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+
+      buttonTimeEnd.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              Navigation.findNavController(v).navigate(R.id.action_addFragment_to_dateAndTimePicker2);
+          }
+      });
+
         //buttonTimeStart.setOnClickListener(this);
 
     }
