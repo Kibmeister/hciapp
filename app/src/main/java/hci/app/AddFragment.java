@@ -1,6 +1,7 @@
 package hci.app;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -62,7 +63,7 @@ public class AddFragment extends Fragment implements View.OnClickListener {
 
     EditText event_description;
     HorizontalNumberPicker attendeeLimit;
-    private Button submit_button, buttonTimeStart, buttonTimeEnd;
+    private Button submit_button, buttonTimeStart, buttonTimeEnd, buttonTime;
 
     DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
 
@@ -72,9 +73,12 @@ public class AddFragment extends Fragment implements View.OnClickListener {
 
         v = inflater.inflate(R.layout.fragment_add, container, false);
 
+        Intent startDatePicker = new Intent(getActivity(), DateAndTimePicker.class);
+        startActivity(startDatePicker);
+
         submit_button = v.findViewById(R.id.btn_createEvent);
-        buttonTimeStart = v.findViewById(R.id.btn_timeStart);
-        buttonTimeEnd = v.findViewById(R.id.btn_timeEnd);
+        //buttonTimeStart = v.findViewById(R.id.btn_timeStart);
+        //buttonTimeEnd = v.findViewById(R.id.btn_timeEnd);
 
         // Inflate the layout for this fragment
         return v;
@@ -96,20 +100,13 @@ public class AddFragment extends Fragment implements View.OnClickListener {
         attendeeLimit.setMin(1);
         attendeeLimit.setMax(8);
 
-       buttonTimeStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(v).navigate(R.id.action_addFragment_to_dateAndTimePicker2);
-            }
-        });
 
-
-      buttonTimeEnd.setOnClickListener(new View.OnClickListener() {
+     /* buttonTimeEnd.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
               Navigation.findNavController(v).navigate(R.id.action_addFragment_to_dateAndTimePicker2);
           }
-      });
+      });*/
 
         //buttonTimeStart.setOnClickListener(this);
 
