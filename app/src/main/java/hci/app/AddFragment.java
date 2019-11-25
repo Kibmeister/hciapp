@@ -99,7 +99,6 @@ public class AddFragment extends Fragment implements View.OnClickListener {
        buttonTimeStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("tada");
                 Navigation.findNavController(v).navigate(R.id.action_addFragment_to_dateAndTimePicker2);
             }
         });
