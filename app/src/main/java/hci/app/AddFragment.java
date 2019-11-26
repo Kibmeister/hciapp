@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Profile;
@@ -36,7 +37,7 @@ import java.util.Map;
 
 /**
  * AddFragment class:
- *
+ * <p>
  * Responsible for adding data for newly created events to the database
  * Can only be called from pressing custom markers on the map.
  * Displays a form where the user can input data, and should verify user input
@@ -52,7 +53,7 @@ import java.util.Map;
 public class AddFragment extends Fragment implements View.OnClickListener {
     // get a reference to the component
 
-
+    private Button mDateDecoratedButton, mDateEndDecoratedButton;
 
     public AddFragment() {
         // Required empty public constructor
@@ -63,7 +64,7 @@ public class AddFragment extends Fragment implements View.OnClickListener {
 
     EditText event_description;
     HorizontalNumberPicker attendeeLimit;
-    private Button submit_button, buttonTimeStart, buttonTimeEnd, buttonTime;
+    private Button submit_button;
 
     DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
 
@@ -73,43 +74,47 @@ public class AddFragment extends Fragment implements View.OnClickListener {
 
         v = inflater.inflate(R.layout.fragment_add, container, false);
 
-        Intent startDatePicker = new Intent(getActivity(), DateAndTimePicker.class);
-        startActivity(startDatePicker);
+        //Intent startDatePicker = new Intent(getActivity(), DateAndTimePicker.class);
+        //startActivity(startDatePicker);
 
         submit_button = v.findViewById(R.id.btn_createEvent);
-        //buttonTimeStart = v.findViewById(R.id.btn_timeStart);
-        //buttonTimeEnd = v.findViewById(R.id.btn_timeEnd);
+        mDateDecoratedButton = v.findViewById(R.id.btn_endTime);
+        mDateEndDecoratedButton = v.findViewById(R.id.btn_startTime);
 
-        // Inflate the layout for this fragment
+
+
+
+
         return v;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable final Bundle savedInstanceState) {
         // Assume view was created from a marker on the map and has a bundle with location information
-
-        submit_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createEventAtLocation();
-            }
-        });
-
         event_description = v.findViewById(R.id.edit_txt_eventdescription);
         attendeeLimit = v.findViewById(R.id.np_channel_nr);
         attendeeLimit.setMin(1);
         attendeeLimit.setMax(8);
 
+       submit_button.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               createEventAtLocation();
+           }
+       });
 
-     /* buttonTimeEnd.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-              Navigation.findNavController(v).navigate(R.id.action_addFragment_to_dateAndTimePicker2);
-          }
-      });*/
-
-        //buttonTimeStart.setOnClickListener(this);
-
+       mDateDecoratedButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               System.out.println("Start date presses");
+           }
+       });
+       mDateEndDecoratedButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               System.out.println("End date pressed");
+           }
+       });
     }
 
 
@@ -150,9 +155,14 @@ public class AddFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-       /*if (v.getId() == R.id.btn_timeStart) {
-            System.out.println("Time start button");
-            Navigation.findNavController(v).navigate(R.id.action_addFragment_to_dateAndTimePicker2);
+       /* if (v.getId() == R.id.btn_startTime) {
+            System.out.println("Button time start pressed");
+
+        } else if (v.getId() == R.id.btn_endTime) {
+            System.out.println("Button time end pressed");
+        } else if (v.getId() == R.id.btn_createEvent){
+            System.out.println("Create event");
+            createEventAtLocation();
         }*/
     }
 }

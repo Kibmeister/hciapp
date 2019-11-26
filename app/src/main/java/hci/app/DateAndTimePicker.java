@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -35,7 +36,8 @@ public class DateAndTimePicker extends AppCompatActivity {
     private SimpleDateFormat mSimpleDateFormat;
     private Calendar mCalendar, mCalendarEnd;
     private Activity mActivity;
-    private TextView mDate, mDateEnd,  mDateDecoratedButton,  mDateEndDecoratedButton;
+    private TextView mDate, mDateEnd;
+    private Button mDateDecoratedButton,  mDateEndDecoratedButton;
     private String replyDateEnd, replyDateStart;
 
     private DatePickerDialog startDatePickerDialog, endDatePickerDialog;
@@ -53,8 +55,8 @@ public class DateAndTimePicker extends AppCompatActivity {
         mDate = (TextView) findViewById(R.id.contentMain);
         mDateEnd = (TextView) findViewById(R.id.contentMain2);
 
-        mDateDecoratedButton = (TextView) findViewById(R.id.txtViewStartTime);
-        mDateEndDecoratedButton = (TextView) findViewById(R.id.txtViewEndTime);
+        mDateDecoratedButton = findViewById(R.id.btn_startTime);
+        mDateEndDecoratedButton = findViewById(R.id.btn_endTime);
 
         mDateDecoratedButton.setOnClickListener(textListener);
         mDateEndDecoratedButton.setOnClickListener(textListener);
@@ -64,7 +66,7 @@ public class DateAndTimePicker extends AppCompatActivity {
     private final View.OnClickListener textListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.txtViewStartTime) {
+            if (v.getId() == R.id.btn_startTime) {
                 System.out.println("Start time chosen");
                 //calender start time
                 mCalendar = Calendar.getInstance();
@@ -72,7 +74,7 @@ public class DateAndTimePicker extends AppCompatActivity {
                         mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
                 startDatePickerDialog.show();
                 selectingStartDate = true;
-            } else if (v.getId() == R.id.txtViewEndTime) {
+            } else if (v.getId() == R.id.btn_endTime) {
                 System.out.println("End time chosen");
                 //calender end time
                 mCalendarEnd = Calendar.getInstance();

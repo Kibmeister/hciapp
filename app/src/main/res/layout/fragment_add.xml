@@ -141,7 +141,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView_numberOfPeople"
         app:layout_constraintVertical_bias="0.48" />
 
-    <TextView
+   <!-- <TextView
         android:id="@+id/txtViewStartTime"
         android:layout_width="130dp"
         android:layout_height="20dp"
@@ -155,9 +155,10 @@
         app:layout_constraintBottom_toTopOf="@+id/edit_txt_targetgroup"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0" /> -->
 
-    <TextView
+
+    <!-- <TextView
         android:id="@+id/txtViewEndTime"
         android:layout_width="130dp"
         android:layout_height="20dp"
@@ -172,6 +173,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.098"
         app:layout_constraintStart_toEndOf="@+id/txtViewStartTime"
+        app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription"
+        app:layout_constraintVertical_bias="0.0" /> -->
+
+    <Button
+        android:id="@+id/btn_startTime"
+        android:layout_width="130dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/whois_the_event_for"
+        android:text="Start date and time"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/contentMain"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btn_endTime"
+        android:layout_width="130dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/whois_the_event_for"
+        android:text="End date and time"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/contentMain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.368"
+        app:layout_constraintStart_toEndOf="@+id/btn_startTime"
         app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription"
         app:layout_constraintVertical_bias="0.0" />
 

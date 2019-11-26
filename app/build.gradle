@@ -43,6 +43,18 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'com.google.firebase:firebase-core:17.2.1'
 
+    //recycle view
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    // For control over item selection of both touch and mouse driven selection
+   // implementation "androidx.recyclerview:recyclerview-selection::1.1.0"
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+
+    //rounded image
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
