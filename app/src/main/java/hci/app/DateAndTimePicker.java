@@ -132,8 +132,6 @@ public class DateAndTimePicker extends AppCompatActivity {
                 selectingEndDate = false;
             }
 
-
-
         }
     };
 

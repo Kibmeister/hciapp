@@ -141,40 +141,6 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView_numberOfPeople"
         app:layout_constraintVertical_bias="0.48" />
 
-   <!-- <TextView
-        android:id="@+id/txtViewStartTime"
-        android:layout_width="130dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginBottom="108dp"
-        android:background="@drawable/whois_the_event_for"
-        android:gravity="center_horizontal"
-        android:text="Start date and time"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/edit_txt_targetgroup"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription"
-        app:layout_constraintVertical_bias="0.0" /> -->
-
-
-    <!-- <TextView
-        android:id="@+id/txtViewEndTime"
-        android:layout_width="130dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginBottom="108dp"
-        android:background="@drawable/whois_the_event_for"
-        android:gravity="center_horizontal"
-        android:text="End date and time"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/edit_txt_targetgroup"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.098"
-        app:layout_constraintStart_toEndOf="@+id/txtViewStartTime"
-        app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription"
-        app:layout_constraintVertical_bias="0.0" /> -->
 
     <Button
         android:id="@+id/btn_startTime"
