@@ -51,9 +51,15 @@ import java.util.Map;
  * Displays a form where the user can input data, and should verify user input
  * before sending data to the database.
  *
+ * Date and Time picker:spawns a date picker followed up by a time picker
+ * that sends the data back to the previous fragment and stores it as a variable.
+ * Code inspired from source:
+ * GitHub :https://github.com/Kiarasht/Android-Templates/tree/master/Templates/DatePickerDialog
+ *
  * @author Frederik Andersen
  * @author Kasper Borgbjerg
  */
+
 
 // TODO: Verify FORM data
 
@@ -65,7 +71,6 @@ public class AddFragment extends Fragment implements View.OnClickListener {
 
     private SimpleDateFormat mSimpleDateFormat;
     private Calendar mCalendar, mCalendarEnd;
-    private Activity mActivity;
     private TextView mDate, mDateEnd;
     private String replyDateEnd, replyDateStart;
 
@@ -129,22 +134,6 @@ public class AddFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        /*mDateDecoratedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.out.println("Start date presses");
-                Intent startDatePicker = new Intent(getActivity(), DateAndTimePicker.class);
-                startActivity(startDatePicker);
-            }
-        });*/
-       /* mDateEndDecoratedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.out.println("End date pressed");
-                Intent startDatePicker = new Intent(getActivity(), DateAndTimePicker.class);
-                startActivity(startDatePicker);
-            }
-        });*/
     }
 
 
@@ -191,7 +180,7 @@ public class AddFragment extends Fragment implements View.OnClickListener {
                 System.out.println("Start time chosen");
                 //calender start time
                 mCalendar = Calendar.getInstance();
-                startDatePickerDialog = new DatePickerDialog(mActivity, mDateDataSet, mCalendar.get(Calendar.YEAR),
+                startDatePickerDialog = new DatePickerDialog(getActivity(), mDateDataSet, mCalendar.get(Calendar.YEAR),
                         mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
                 startDatePickerDialog.show();
                 selectingStartDate = true;
@@ -199,7 +188,7 @@ public class AddFragment extends Fragment implements View.OnClickListener {
                 System.out.println("End time chosen");
                 //calender end time
                 mCalendarEnd = Calendar.getInstance();
-                endDatePickerDialog = new DatePickerDialog(mActivity, mDateDataSet, mCalendarEnd.get(Calendar.YEAR),
+                endDatePickerDialog = new DatePickerDialog(getActivity(), mDateDataSet, mCalendarEnd.get(Calendar.YEAR),
                         mCalendarEnd.get(Calendar.MONTH), mCalendarEnd.get(Calendar.DAY_OF_MONTH));
                 endDatePickerDialog.show();
                 selectingEndDate = true;
@@ -215,13 +204,13 @@ public class AddFragment extends Fragment implements View.OnClickListener {
                 mCalendar.set(Calendar.YEAR, year);
                 mCalendar.set(Calendar.MONTH, monthOfYear);
                 mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                startTimePickerDialog = new TimePickerDialog(mActivity, mTimeDataSet, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true);
+                startTimePickerDialog = new TimePickerDialog(getActivity(), mTimeDataSet, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true);
                 startTimePickerDialog.show();
             } else if (selectingEndDate) {
                 mCalendarEnd.set(Calendar.YEAR, year);
                 mCalendarEnd.set(Calendar.MONTH, monthOfYear);
                 mCalendarEnd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                endTimePickerDialog = new TimePickerDialog(mActivity, mTimeDataSet, mCalendarEnd.get(Calendar.HOUR_OF_DAY), mCalendarEnd.get(Calendar.MINUTE), true);
+                endTimePickerDialog = new TimePickerDialog(getActivity(), mTimeDataSet, mCalendarEnd.get(Calendar.HOUR_OF_DAY), mCalendarEnd.get(Calendar.MINUTE), true);
                 endTimePickerDialog.show();
             }
         }
