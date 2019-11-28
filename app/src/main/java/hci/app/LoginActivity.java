@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("Creating LoginActivity");
         setContentView(R.layout.activity_login);
 
         loginButton = findViewById(R.id.bt_facebook);
