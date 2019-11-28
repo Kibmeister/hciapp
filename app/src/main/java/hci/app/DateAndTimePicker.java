@@ -1,4 +1,4 @@
-package hci.app;
+/* package hci.app;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -28,7 +28,6 @@ import java.util.Locale;
  *
  * Code inspired from source:
  * GitHub :https://github.com/Kiarasht/Android-Templates/tree/master/Templates/DatePickerDialog
- */
 
 public class DateAndTimePicker extends AppCompatActivity {
 
@@ -44,7 +43,7 @@ public class DateAndTimePicker extends AppCompatActivity {
     private TimePickerDialog startTimePickerDialog, endTimePickerDialog;
     private boolean selectingStartDate, selectingEndDate;
 
-    /* Set up view, variables, and OnClickListener */
+    /* Set up view, variables, and OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +61,7 @@ public class DateAndTimePicker extends AppCompatActivity {
         mDateEndDecoratedButton.setOnClickListener(textListener);
     }
 
-    /* Define the onClickListener, and start the DatePickerDialog with users current time */
+    /* Define the onClickListener, and start the DatePickerDialog with users current time
     private final View.OnClickListener textListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -86,7 +85,7 @@ public class DateAndTimePicker extends AppCompatActivity {
         }
     };
 
-    /* After user decided on a date, store those in our calendar variable and then start the TimePickerDialog immediately */
+    /* After user decided on a date, store those in our calendar variable and then start the TimePickerDialog immediately
     private final DatePickerDialog.OnDateSetListener mDateDataSet = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -107,7 +106,7 @@ public class DateAndTimePicker extends AppCompatActivity {
         }
     };
 
-    /* After user decided on a time, save them into our calendar instance, and now parse what our calendar has into the TextView */
+    /* After user decided on a time, save them into our calendar instance, and now parse what our calendar has into the TextView
     private final TimePickerDialog.OnTimeSetListener mTimeDataSet = new TimePickerDialog.OnTimeSetListener() {
         @Override
 
@@ -132,10 +131,9 @@ public class DateAndTimePicker extends AppCompatActivity {
                 selectingEndDate = false;
             }
 
-
-
         }
     };
 
 
 }
+*/

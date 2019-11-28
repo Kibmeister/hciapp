@@ -4,6 +4,8 @@ package hci.app;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -16,6 +18,7 @@ import android.view.*;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.internal.GoogleApiManager;
+import com.google.android.gms.dynamic.IObjectWrapper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.*;
@@ -30,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -126,13 +130,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
 
     /**
-     * Code found on https://stackoverflow.com/a/49739813
+     * Code partly found on https://stackoverflow.com/a/49739813
      * <p>
      * Adds all markers from the database to the map overview.
      *
      * @param mMap: Map variable for adding event pins to the map
      */
     private void loadEvents(final GoogleMap mMap) {
+        System.out.println();
         eventsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -143,13 +148,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                                 .position(new LatLng(
                                         Double.valueOf(data.child("latitude").getValue().toString()),
                                         Double.valueOf(data.child("longitude").getValue().toString())))
-                                .title(data.child("eventHeader").getValue().toString());
+                                .title(data.child("eventHeader").getValue().toString())
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.example));
                         marker = mMap.addMarker(markerOptions);
                         marker.setTag(data.getKey());
+                        System.out.println(markerOptions.getIcon());
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
