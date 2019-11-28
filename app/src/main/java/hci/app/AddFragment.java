@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,13 +66,13 @@ public class AddFragment extends Fragment {
 
     private SimpleDateFormat mSimpleDateFormat;
     private Calendar mCalendar, mCalendarEnd;
-    private Activity mActivity;
     private TextView mDate, mDateEnd;
     private String replyDateEnd, replyDateStart;
 
     private DatePickerDialog startDatePickerDialog, endDatePickerDialog;
     private TimePickerDialog startTimePickerDialog, endTimePickerDialog;
     private boolean selectingStartDate, selectingEndDate;
+    private HashMap<String, Integer> fromDate, toDate;
 
     public AddFragment() {
         // Required empty public constructor
@@ -92,9 +93,6 @@ public class AddFragment extends Fragment {
 
         v = inflater.inflate(R.layout.fragment_add, container, false);
 
-        //Intent startDatePicker = new Intent(getActivity(), DateAndTimePicker.class);
-        //startActivity(startDatePicker);
-
         submit_button = v.findViewById(R.id.btn_createEvent);
         mDateDecoratedButton = v.findViewById(R.id.btn_endTime);
         mDateEndDecoratedButton = v.findViewById(R.id.btn_startTime);
@@ -103,9 +101,6 @@ public class AddFragment extends Fragment {
 
         mDate = v.findViewById(R.id.contentMain);
         mDateEnd = v.findViewById(R.id.contentMain2);
-
-        mDateDecoratedButton = v.findViewById(R.id.btn_startTime);
-        mDateEndDecoratedButton = v.findViewById(R.id.btn_endTime);
 
         mDateDecoratedButton.setOnClickListener(textListener);
         mDateEndDecoratedButton.setOnClickListener(textListener);
@@ -152,17 +147,20 @@ public class AddFragment extends Fragment {
             eventMap.put("latitude", latitude);
             eventMap.put("longitude", longitude);
             eventMap.put("hostId", Profile.getCurrentProfile().getId());
-            List<String> attendeeIds = new ArrayList<>();
-            // eventMap.put("attendeeIds", attendeeIds.toString()); // TODO: Cant push lists to database, needs workaround
+            // eventMap.put();
             eventMap.put("attendeeLimit", attendeeLimit.getValue());
             eventMap.put("eventDescription", event_description.getText());
             eventMap.put("eventHeader", "Event Header");
-            eventMap.put("timestamp", 1576188000);
-
-            System.out.println(eventMap);
 
             String eventKey = eventsRef.push().getKey();
-            eventsRef.child(eventKey).setValue(eventMap);
+            DatabaseReference event = eventsRef.child(eventKey);
+            event.setValue(eventMap);
+
+            // Add date data:
+            DatabaseReference fromDate = event.child("fromDate");
+            replyDateStart.
+
+
         } else {
             System.out.println("Please fill in the reuired fields!");
         }
@@ -170,6 +168,15 @@ public class AddFragment extends Fragment {
 
     // TODO: Verify the form input before submitting to firebase
     private boolean formDataIsValid() {
+        if (attendeeLimit.getMin() > attendeeLimit.getValue() && attendeeLimit.getMax() < attendeeLimit.getValue()) {
+            Toast.makeText(getContext(), "Invalid number of attendees", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+
+
+
+
         return false;
     }
     /**

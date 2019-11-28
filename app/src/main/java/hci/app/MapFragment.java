@@ -144,15 +144,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     if (data != null) {
                         Marker marker;
+                        String markerIconName = "example";
+                        int id = getResources().getIdentifier(markerIconName, "drawable", getActivity().getPackageName());
                         MarkerOptions markerOptions = new MarkerOptions()
                                 .position(new LatLng(
                                         Double.valueOf(data.child("latitude").getValue().toString()),
                                         Double.valueOf(data.child("longitude").getValue().toString())))
                                 .title(data.child("eventHeader").getValue().toString())
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.example));
+
+                                .icon(BitmapDescriptorFactory.fromResource(id));
                         marker = mMap.addMarker(markerOptions);
                         marker.setTag(data.getKey());
-                        System.out.println(markerOptions.getIcon());
                     }
                 }
             }
