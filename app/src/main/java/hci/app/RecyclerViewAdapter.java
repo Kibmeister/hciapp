@@ -53,33 +53,30 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Log.d(TAG, "onBindViewHolder: called");
+        //Log.d(TAG, "onBindViewHolder: called");
         Glide.with(mContext)
                 .asBitmap()
                 .load(mIconName.get(position))
                 .into(holder.icon);
 
         holder.eventDescription.setText(mEventDescription.get(position));
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: mEventDescription");
-
-            }
-        });
 
     }
 
     @Override
     public int getItemCount() {
         return mEventDescription.size();
+
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         CircleImageView icon;
         TextView eventDescription;
         RelativeLayout parentLayout;
+
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

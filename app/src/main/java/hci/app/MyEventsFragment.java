@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -64,11 +65,6 @@ public class MyEventsFragment extends Fragment implements View.OnClickListener {
 
 
         recyclerView = v.findViewById(R.id.id_recyclerView);
-
-        eventDescriptionTxt = recyclerView.findViewById(R.id.id_item_event_description);
-
-        System.out.print("Id event description" + eventDescriptionTxt.getId());
-
 
 
         initIconBitMapOwn();
@@ -142,14 +138,14 @@ public class MyEventsFragment extends Fragment implements View.OnClickListener {
     public void initRecyclerView(Context context, ArrayList<String> url, ArrayList<String> description) {
 
         Log.d(TAG, "initRecyclerView: true");
-        System.out.print("inti recycler view" + recyclerView.getId());
+        //System.out.print("inti recycler view" + recyclerView.getId());
 
         RecyclerViewAdapter recyclerViewAdapterAttending = new RecyclerViewAdapter(context, url, description);
 
         recyclerView.setAdapter(recyclerViewAdapterAttending);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
+        //TODO : recycleview.getAdapter().getViewholder().findViewById(R.id.id_event_description).setTextColor(Color.parseColor("#00B100");
 
     }
 
@@ -162,7 +158,8 @@ public class MyEventsFragment extends Fragment implements View.OnClickListener {
 
             initRecyclerView(getContext(), mIconUrlsAttending, mTextDescriptionAttending);
 
-            eventDescriptionTxt = v.findViewById(R.id.id_item_event_description);
+
+           // eventDescriptionTxt = recycleview.getAdapter().getViewholder().findViewById(R.id.id_event_description).setTextColor(Color.parseColor("#00B100");
 
             //eventDescriptionTxt.setTextColor(Color.parseColor("#00B100"));
 

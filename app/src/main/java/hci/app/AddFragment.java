@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,9 +16,11 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -41,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.R;
 
 
 /**
@@ -73,16 +77,16 @@ public class AddFragment extends Fragment implements View.OnClickListener {
     private Calendar mCalendar, mCalendarEnd;
     private TextView mDate, mDateEnd;
     private String replyDateEnd, replyDateStart;
+    private Spinner categorySpinner;
 
     private DatePickerDialog startDatePickerDialog, endDatePickerDialog;
     private TimePickerDialog startTimePickerDialog, endTimePickerDialog;
     private boolean selectingStartDate, selectingEndDate;
 
     public AddFragment() {
-        // Required empty public constructor
+
+
     }
-
-
     View v;
 
     EditText event_description;
@@ -103,6 +107,16 @@ public class AddFragment extends Fragment implements View.OnClickListener {
         submit_button = v.findViewById(R.id.btn_createEvent);
         mDateDecoratedButton = v.findViewById(R.id.btn_endTime);
         mDateEndDecoratedButton = v.findViewById(R.id.btn_startTime);
+
+        // Code responsible for creating the category spinner
+        Resources res = getResources();
+        String[] myBooks = res.getStringArray(.categories);
+
+
+
+        categorySpinner = v.findViewById(R.id.id_spinner_category);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), categories, android.R.layout.simple_spinner_item);
+
 
         mSimpleDateFormat = new SimpleDateFormat("dd/MM/yyyy k:mm ", Locale.getDefault());
 
