@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:drawable ="@drawable/single_event_layout"
-    android:paddingTop="15dp">
+    android:paddingTop="15dp"
+    tools:context=".MyEventsFragment">
 
 
     <de.hdodenhof.circleimageview.CircleImageView

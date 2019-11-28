@@ -1,5 +1,8 @@
 package hci.app;
 
+import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -7,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -26,24 +31,48 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList <String> mIconNames = new ArrayList<>();
-    private ArrayList <String> mEventDescription = new ArrayList<>();
+    private ArrayList <String> mIconName ;
+    private ArrayList <String> mEventDescription ;
+    private Context mContext;
 
+    public RecyclerViewAdapter (Context context, ArrayList<String> iconName, ArrayList<String> eventDescription){
+        this.mIconName = iconName;
+        this.mEventDescription = eventDescription;
+        this.mContext = context;
+    }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_event_item,parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
+
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        Log.d(TAG, "onBindViewHolder: called");
+        Glide.with(mContext)
+                .asBitmap()
+                .load(mIconName.get(position))
+                .into(holder.icon);
+
+        holder.eventDescription.setText(mEventDescription.get(position));
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: mEventDescription");
+
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mEventDescription.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
