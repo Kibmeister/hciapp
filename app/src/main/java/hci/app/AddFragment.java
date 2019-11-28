@@ -2,8 +2,10 @@ package hci.app;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -24,24 +26,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.facebook.Profile;
-import com.facebook.login.LoginManager;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.SyncFailedException;
-import java.sql.Array;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -56,8 +45,6 @@ import java.util.Map;
  * @author Kasper Borgbjerg
  */
 
-// TODO: Verify FORM data
-
 
 public class AddFragment extends Fragment {
     // get a reference to the component
@@ -68,24 +55,23 @@ public class AddFragment extends Fragment {
     private Calendar mCalendar, mCalendarEnd;
     private TextView mDate, mDateEnd;
     private String replyDateEnd, replyDateStart;
+    private EditText event_description, targetGroup;
+    private HorizontalNumberPicker attendeeLimit;
+    private Button submit_button;
 
     private DatePickerDialog startDatePickerDialog, endDatePickerDialog;
     private TimePickerDialog startTimePickerDialog, endTimePickerDialog;
     private boolean selectingStartDate, selectingEndDate;
-    private HashMap<String, Integer> fromDate, toDate;
+    private Date fromDate, toDate;
 
     public AddFragment() {
         // Required empty public constructor
     }
 
-
     View v;
 
-    EditText event_description;
-    HorizontalNumberPicker attendeeLimit;
-    private Button submit_button;
-
     DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
+    DatabaseReference userHostedEventsRef = FirebaseDatabase.getInstance().getReference("users/" + Profile.getCurrentProfile().getId() + "/hostedEvents/");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,9 +91,6 @@ public class AddFragment extends Fragment {
         mDateDecoratedButton.setOnClickListener(textListener);
         mDateEndDecoratedButton.setOnClickListener(textListener);
 
-        this.fromDate = new HashMap<>();
-        this.toDate = new HashMap<>();
-
         return v;
     }
 
@@ -116,6 +99,7 @@ public class AddFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable final Bundle savedInstanceState) {
         // Assume view was created from a marker on the map and has a bundle with location information
         event_description = v.findViewById(R.id.edit_txt_eventdescription);
+        targetGroup = v.findViewById(R.id.edit_txt_targetgroup);
         attendeeLimit = v.findViewById(R.id.np_channel_nr);
         attendeeLimit.setMin(1);
         attendeeLimit.setMax(8);
@@ -131,7 +115,29 @@ public class AddFragment extends Fragment {
      * Responsible for sending the form information to the database.
      */
     private void createEventAtLocation() {
+        if (formDataIsValid()) {
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Confirm event submission")
+                    .setMessage("Do you wish to submit this event?")
+                    .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            submitEvent();
+                            Toast.makeText(getContext(), "Event submitted!", Toast.LENGTH_LONG).show();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    })
+                    .show();
+        } else {
+            System.out.println("Please fill in the reuired fields!");
+        }
+    }
 
+    private void submitEvent() {
         Map<String, String> eventMap = new HashMap<>();
         Double latitude, longitude;
 
@@ -143,55 +149,62 @@ public class AddFragment extends Fragment {
             Toast.makeText(getContext(), "Error occured while submitting event", Toast.LENGTH_LONG).show();
             return;
         }
+        // Add event information to the Map object and send it to the database class
+        eventMap.put("latitude", latitude.toString());
+        eventMap.put("longitude", longitude.toString());
+        eventMap.put("hostId", Profile.getCurrentProfile().getId());
+        // eventMap.put();
+        eventMap.put("attendeeLimit", String.valueOf(attendeeLimit.getValue()));
+        eventMap.put("eventHeader", event_description.getText().toString());
+        eventMap.put("eventText", targetGroup.getText().toString());
+        //TODO: Marker icons input
 
-        if (formDataIsValid()) {
+        String eventKey = eventsRef.push().getKey();
+        DatabaseReference event = eventsRef.child(eventKey);
+        event.setValue(eventMap);
 
-            // Add event information to the Map object and send it to the database class
-            eventMap.put("latitude", latitude.toString());
-            eventMap.put("longitude", longitude.toString());
-            eventMap.put("hostId", Profile.getCurrentProfile().getId());
-            // eventMap.put();
-            eventMap.put("attendeeLimit", String.valueOf(attendeeLimit.getValue()));
-            eventMap.put("eventDescription", event_description.getText().toString());
-            eventMap.put("eventHeader", "Event Header");
+        // Add date data in long form:
+        DatabaseReference fromDateRef = event.child("fromDate");
+        fromDateRef.setValue(this.fromDate.getTime());
 
-            String eventKey = eventsRef.push().getKey();
-            DatabaseReference event = eventsRef.child(eventKey);
-            event.setValue(eventMap);
+        DatabaseReference toDateRef = event.child("toDate");
+        toDateRef.setValue(this.toDate.getTime());
 
-            // Add date data:
-            DatabaseReference fromDateRef = event.child("fromDate");
-            fromDateRef.setValue(this.fromDate);
-
-            DatabaseReference toDateRef = event.child("toDate");
-            toDateRef.setValue(this.toDate);
-
-            // Add reference to event in host reference
-            FirebaseDatabase.getInstance().getReference(
-                    "users/" +
-                    Profile.getCurrentProfile().getId() +
-                    "/hostedEvents/" +
-                    eventKey)
-                        .setValue(eventKey);
-        } else {
-            System.out.println("Please fill in the reuired fields!");
-        }
+        // Add reference to event in host reference
+        userHostedEventsRef.child(eventKey).setValue(eventKey);
+        // TODO: Keep integer of hosted events counter in database?
     }
 
-    // TODO: Verify the form input before submitting to firebase
     // Check dates, attendees, text fields.
     private boolean formDataIsValid() {
         if (attendeeLimit.getMin() > attendeeLimit.getValue() && attendeeLimit.getMax() < attendeeLimit.getValue()) {
             Toast.makeText(getContext(), "Invalid number of attendees", Toast.LENGTH_LONG).show();
             return false;
         }
-
-
-
-
+        if (event_description.getText().toString().length() > 40) {
+            Toast.makeText(getContext(), "Too long event name!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (targetGroup.toString().length() > 200) {
+            Toast.makeText(getContext(), "Event description too long!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (fromDate == null) {
+            Toast.makeText(getContext(), "Invalid starting date", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (toDate == null) {
+            Toast.makeText(getContext(), "Invalid ending date", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (fromDate.after(toDate)) {
+            Toast.makeText(getContext(), "Your event can't end before it begins!", Toast.LENGTH_LONG).show();
+            return false;
+        }
 
         return true;
     }
+
     /**
      * DatePicker Listeners
      */
@@ -226,18 +239,12 @@ public class AddFragment extends Fragment {
                 mCalendar.set(Calendar.YEAR, year);
                 mCalendar.set(Calendar.MONTH, monthOfYear);
                 mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                fromDate.put("year", year);
-                fromDate.put("month", monthOfYear);
-                fromDate.put("day", dayOfMonth);
                 startTimePickerDialog = new TimePickerDialog(getActivity(), mTimeDataSet, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true);
                 startTimePickerDialog.show();
             } else if (selectingEndDate) {
                 mCalendarEnd.set(Calendar.YEAR, year);
                 mCalendarEnd.set(Calendar.MONTH, monthOfYear);
                 mCalendarEnd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                toDate.put("year", year);
-                toDate.put("month", monthOfYear);
-                toDate.put("day", dayOfMonth);
                 endTimePickerDialog = new TimePickerDialog(getActivity(), mTimeDataSet, mCalendarEnd.get(Calendar.HOUR_OF_DAY), mCalendarEnd.get(Calendar.MINUTE), true);
                 endTimePickerDialog.show();
             }
@@ -252,21 +259,18 @@ public class AddFragment extends Fragment {
             if (selectingStartDate) {
                 mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 mCalendar.set(Calendar.MINUTE, minute);
-                fromDate.put("hour", hourOfDay);
-                fromDate.put("minute", minute);
+                fromDate = mCalendar.getTime();
                 mDate.setText(mSimpleDateFormat.format(mCalendar.getTime()));
                 replyDateStart = mSimpleDateFormat.format(mCalendar.getTime());
                 selectingStartDate = false;
             } else if (selectingEndDate) {
                 mCalendarEnd.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 mCalendarEnd.set(Calendar.MINUTE, minute);
-                toDate.put("hour", hourOfDay);
-                toDate.put("minute", minute);
+                toDate = mCalendarEnd.getTime();
                 mDateEnd.setText(mSimpleDateFormat.format(mCalendarEnd.getTime()));
                 replyDateEnd = mSimpleDateFormat.format(mCalendarEnd.getTime());
                 selectingEndDate = false;
             }
-
         }
     };
 }

@@ -137,7 +137,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
      * @param mMap: Map variable for adding event pins to the map
      */
     private void loadEvents(final GoogleMap mMap) {
-        System.out.println();
         eventsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -151,7 +150,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                                         Double.valueOf(data.child("latitude").getValue().toString()),
                                         Double.valueOf(data.child("longitude").getValue().toString())))
                                 .title(data.child("eventHeader").getValue().toString())
-
                                 .icon(BitmapDescriptorFactory.fromResource(id));
                         marker = mMap.addMarker(markerOptions);
                         marker.setTag(data.getKey());
