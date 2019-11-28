@@ -105,6 +105,9 @@ public class AddFragment extends Fragment {
         mDateDecoratedButton.setOnClickListener(textListener);
         mDateEndDecoratedButton.setOnClickListener(textListener);
 
+        this.fromDate = new HashMap<>();
+        this.toDate = new HashMap<>();
+
         return v;
     }
 
@@ -129,7 +132,7 @@ public class AddFragment extends Fragment {
      */
     private void createEventAtLocation() {
 
-        Map<String, Object> eventMap = new HashMap<>();
+        Map<String, String> eventMap = new HashMap<>();
         Double latitude, longitude;
 
         // prevent getArguments() NullPointerException
@@ -144,12 +147,12 @@ public class AddFragment extends Fragment {
         if (formDataIsValid()) {
 
             // Add event information to the Map object and send it to the database class
-            eventMap.put("latitude", latitude);
-            eventMap.put("longitude", longitude);
+            eventMap.put("latitude", latitude.toString());
+            eventMap.put("longitude", longitude.toString());
             eventMap.put("hostId", Profile.getCurrentProfile().getId());
             // eventMap.put();
-            eventMap.put("attendeeLimit", attendeeLimit.getValue());
-            eventMap.put("eventDescription", event_description.getText());
+            eventMap.put("attendeeLimit", String.valueOf(attendeeLimit.getValue()));
+            eventMap.put("eventDescription", event_description.getText().toString());
             eventMap.put("eventHeader", "Event Header");
 
             String eventKey = eventsRef.push().getKey();
@@ -157,16 +160,26 @@ public class AddFragment extends Fragment {
             event.setValue(eventMap);
 
             // Add date data:
-            DatabaseReference fromDate = event.child("fromDate");
-            replyDateStart.
+            DatabaseReference fromDateRef = event.child("fromDate");
+            fromDateRef.setValue(this.fromDate);
 
+            DatabaseReference toDateRef = event.child("toDate");
+            toDateRef.setValue(this.toDate);
 
+            // Add reference to event in host reference
+            FirebaseDatabase.getInstance().getReference(
+                    "users/" +
+                    Profile.getCurrentProfile().getId() +
+                    "/hostedEvents/" +
+                    eventKey)
+                        .setValue(eventKey);
         } else {
             System.out.println("Please fill in the reuired fields!");
         }
     }
 
     // TODO: Verify the form input before submitting to firebase
+    // Check dates, attendees, text fields.
     private boolean formDataIsValid() {
         if (attendeeLimit.getMin() > attendeeLimit.getValue() && attendeeLimit.getMax() < attendeeLimit.getValue()) {
             Toast.makeText(getContext(), "Invalid number of attendees", Toast.LENGTH_LONG).show();
@@ -177,7 +190,7 @@ public class AddFragment extends Fragment {
 
 
 
-        return false;
+        return true;
     }
     /**
      * DatePicker Listeners
@@ -188,7 +201,6 @@ public class AddFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.btn_startTime) {
-                System.out.println("Start time chosen");
                 //calender start time
                 mCalendar = Calendar.getInstance();
                 startDatePickerDialog = new DatePickerDialog(getActivity(), mDateDataSet, mCalendar.get(Calendar.YEAR),
@@ -196,7 +208,6 @@ public class AddFragment extends Fragment {
                 startDatePickerDialog.show();
                 selectingStartDate = true;
             } else if (v.getId() == R.id.btn_endTime) {
-                System.out.println("End time chosen");
                 //calender end time
                 mCalendarEnd = Calendar.getInstance();
                 endDatePickerDialog = new DatePickerDialog(getActivity(), mDateDataSet, mCalendarEnd.get(Calendar.YEAR),
@@ -211,17 +222,22 @@ public class AddFragment extends Fragment {
     private final DatePickerDialog.OnDateSetListener mDateDataSet = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            System.out.println("View id: " + view.getId());
             if (selectingStartDate) {
                 mCalendar.set(Calendar.YEAR, year);
                 mCalendar.set(Calendar.MONTH, monthOfYear);
                 mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                fromDate.put("year", year);
+                fromDate.put("month", monthOfYear);
+                fromDate.put("day", dayOfMonth);
                 startTimePickerDialog = new TimePickerDialog(getActivity(), mTimeDataSet, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true);
                 startTimePickerDialog.show();
             } else if (selectingEndDate) {
                 mCalendarEnd.set(Calendar.YEAR, year);
                 mCalendarEnd.set(Calendar.MONTH, monthOfYear);
                 mCalendarEnd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                toDate.put("year", year);
+                toDate.put("month", monthOfYear);
+                toDate.put("day", dayOfMonth);
                 endTimePickerDialog = new TimePickerDialog(getActivity(), mTimeDataSet, mCalendarEnd.get(Calendar.HOUR_OF_DAY), mCalendarEnd.get(Calendar.MINUTE), true);
                 endTimePickerDialog.show();
             }
@@ -236,20 +252,18 @@ public class AddFragment extends Fragment {
             if (selectingStartDate) {
                 mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 mCalendar.set(Calendar.MINUTE, minute);
-
+                fromDate.put("hour", hourOfDay);
+                fromDate.put("minute", minute);
                 mDate.setText(mSimpleDateFormat.format(mCalendar.getTime()));
                 replyDateStart = mSimpleDateFormat.format(mCalendar.getTime());
-                System.out.println("Date start : " + replyDateStart);
-                mCalendar = null;
                 selectingStartDate = false;
             } else if (selectingEndDate) {
                 mCalendarEnd.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 mCalendarEnd.set(Calendar.MINUTE, minute);
-
+                toDate.put("hour", hourOfDay);
+                toDate.put("minute", minute);
                 mDateEnd.setText(mSimpleDateFormat.format(mCalendarEnd.getTime()));
                 replyDateEnd = mSimpleDateFormat.format(mCalendarEnd.getTime());
-                System.out.println("Date end : " + replyDateStart);
-                mDateEnd = null;
                 selectingEndDate = false;
             }
 
