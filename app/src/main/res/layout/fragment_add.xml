@@ -59,11 +59,10 @@
         android:id="@+id/btn_createEvent"
         android:layout_width="137dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/create_event"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -93,6 +92,7 @@
         android:ems="10"
         android:gravity="center_horizontal"
         android:hint="Who is the event for?"
+        android:fontFamily=""
         android:inputType="textPersonName"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
@@ -102,32 +102,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.517" />
 
-    <Button
-        android:id="@+id/btn_event_category"
-        android:layout_width="296dp"
-        android:layout_height="47dp"
-        android:background="@drawable/whois_the_event_for"
-        android:text="Choose category for event"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.628" />
 
     <Spinner
         android:id="@+id/id_spinner_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="396dp"
+        android:spinnerMode="dialog"
+        android:prompt="@string/spinnerHint"
+        style="@style/spinner_style"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.967" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_txt_targetgroup"
+        app:layout_constraintVertical_bias="0.152" />
 
     <ImageView
         android:id="@+id/imageView_numberOfPeople"
@@ -137,23 +123,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_event_category"
+        app:layout_constraintTop_toBottomOf="@+id/id_spinner_category"
         app:layout_constraintVertical_bias="0.124" />
-
-
-
 
 
     <hci.app.HorizontalNumberPicker
         android:id="@+id/np_channel_nr"
         android:layout_width="297dp"
         android:layout_height="56dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_createEvent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_numberOfPeople"
-        app:layout_constraintVertical_bias="0.48" />
-
+        app:layout_constraintVertical_bias="0.099" />
 
     <Button
         android:id="@+id/btn_startTime"
@@ -188,33 +171,5 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription"
         app:layout_constraintVertical_bias="0.0" />
 
-    <!-- <Button
-         android:id="@+id/btn_timeStart"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginStart="84dp"
-         android:layout_marginTop="56dp"
-         android:layout_marginBottom="57dp"
-         android:text="START TIME"
-         app:layout_constraintBottom_toTopOf="@+id/edit_txt_targetgroup"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription"
-         app:layout_constraintVertical_bias="0.0" />*/
-
-     <Button
-         android:id="@+id/btn_timeEnd"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginStart="44dp"
-         android:layout_marginTop="56dp"
-         android:layout_marginBottom="57dp"
-         android:text="END TIME"
-         app:layout_constraintBottom_toTopOf="@+id/edit_txt_targetgroup"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintHorizontal_bias="0.0"
-         app:layout_constraintStart_toEndOf="@+id/btn_timeStart"
-         app:layout_constraintTop_toBottomOf="@+id/edit_txt_eventdescription"
-         app:layout_constraintVertical_bias="0.0" />
- -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

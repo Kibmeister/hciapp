@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import java.util.ArrayList;
 
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
@@ -44,7 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.R;
+
 
 
 /**
@@ -109,13 +110,24 @@ public class AddFragment extends Fragment implements View.OnClickListener {
         mDateEndDecoratedButton = v.findViewById(R.id.btn_startTime);
 
         // Code responsible for creating the category spinner
-        Resources res = getResources();
-        String[] myBooks = res.getStringArray(.categories);
-
-
+        List<String> list = new ArrayList<String>();
+        list.add("");
+        list.add("Restaurant");
+        list.add("Cinema");
+        list.add("Nature");
+        list.add("Food");
+        list.add("Caffe");
+        list.add("Party");
+        list.add("Activity");
+        list.add("Other category");
 
         categorySpinner = v.findViewById(R.id.id_spinner_category);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), categories, android.R.layout.simple_spinner_item);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getContext(),R.layout.spinner_item_custom,list);
+
+        dataAdapter.setDropDownViewResource(R.layout.drop_down_resource);
+
+        categorySpinner.setAdapter(dataAdapter);
 
 
         mSimpleDateFormat = new SimpleDateFormat("dd/MM/yyyy k:mm ", Locale.getDefault());
