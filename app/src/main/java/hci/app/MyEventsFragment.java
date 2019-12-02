@@ -7,12 +7,15 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import com.google.firebase.database.DatabaseReference;
 
 
 /**
@@ -25,6 +28,8 @@ public class MyEventsFragment extends Fragment implements View.OnClickListener{
 
     private RadioButton buttonAttendees, buttonOwn;
     private RadioGroup radioGroup;
+    private RecyclerView hostedEvents, attendeeEvents;
+    private DatabaseReference databaseReference;
 
 
     public MyEventsFragment() {
@@ -35,9 +40,18 @@ public class MyEventsFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        databaseReference.keepSynced(true);
+
+
+
+
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_my_events, container, false);
+
     }
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable final Bundle savedInstanceState) {
         // Assume view was created from a marker on the map and has a bundle with location information
