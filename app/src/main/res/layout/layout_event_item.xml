@@ -20,7 +20,7 @@
     </de.hdodenhof.circleimageview.CircleImageView>
 
     <TextView
-        android:id="@+id/id_item_event_description"
+        android:id="@+id/id_item_event_header"
         android:layout_width="280dp"
         android:maxWidth="280dp"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         android:textColor="#F79E47" />
 
     <TextView
-        android:id="@+id/id_item_event_time"
+        android:id="@+id/id_item_event_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/id_image"
@@ -44,7 +44,7 @@
         android:textColor="#434D65"/>
 
     <TextView
-        android:id="@+id/id_item_event_attending"
+        android:id="@+id/id_item_event_attendee_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -74,7 +74,7 @@
         android:layout_marginLeft = "18dp"/>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

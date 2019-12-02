@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "378266882602-4uf624vd9s0f53k6ju7f1lohk8ajlqoo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hci.app",
+            "certificate_hash": "ac1613d0404b69cc84cec5cf573cee322a935eb6"
+          }
+        },
+        {
           "client_id": "378266882602-6ie0e4v3jine3b0q83pr39deqj25d7pq.apps.googleusercontent.com",
           "client_type": 3
         }

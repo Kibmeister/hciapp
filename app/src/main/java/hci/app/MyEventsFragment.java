@@ -94,7 +94,7 @@ public class MyEventsFragment extends Fragment implements View.OnClickListener{
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             icon = itemView.findViewById(R.id.id_image);
-            eventDescription = itemView.findViewById(R.id.id_item_event_description);
+            eventDescription = itemView.findViewById(R.id.id_item_event_header);
             parentLayout = itemView.findViewById(R.id.id_parent_layout);
 
         }

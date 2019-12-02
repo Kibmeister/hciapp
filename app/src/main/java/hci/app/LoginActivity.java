@@ -1,5 +1,6 @@
 package hci.app;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,7 +26,7 @@ import com.facebook.login.widget.LoginButton;
  * @author Frederik Andersen
  */
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Activity {
 
     private LoginButton loginButton;
     private Button loginButtonFacade;
