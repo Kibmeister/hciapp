@@ -76,7 +76,6 @@ public class AddFragment extends Fragment {
     private Calendar mCalendar, mCalendarEnd;
     private TextView mDate, mDateEnd;
     private String replyDateEnd, replyDateStart;
-    private Spinner categorySpinner;
 
     private DatePickerDialog startDatePickerDialog, endDatePickerDialog;
     private TimePickerDialog startTimePickerDialog, endTimePickerDialog;
@@ -104,20 +103,9 @@ public class AddFragment extends Fragment {
 
         v = inflater.inflate(R.layout.fragment_add, container, false);
 
-        //Intent startDatePicker = new Intent(getActivity(), DateAndTimePicker.class);
-        //startActivity(startDatePicker);
-
         submit_button = v.findViewById(R.id.btn_createEvent);
         mDateDecoratedButton = v.findViewById(R.id.btn_endTime);
         mDateEndDecoratedButton = v.findViewById(R.id.btn_startTime);
-
-        // Code responsible for creating the category spinner
-        Resources res = getResources();
-        String[] myBooks = res.getStringArray(categories);
-
-        categorySpinner = v.findViewById(R.id.id_spinner_category);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), categories, android.R.layout.simple_spinner_item);
-
 
         mSimpleDateFormat = new SimpleDateFormat("dd/MM/yyyy k:mm ", Locale.getDefault());
 
