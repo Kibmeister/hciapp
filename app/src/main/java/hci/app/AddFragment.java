@@ -1,17 +1,16 @@
 package hci.app;
 
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,21 +24,15 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import com.facebook.Profile;
-import com.facebook.login.LoginManager;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.SyncFailedException;
-import java.sql.Array;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -53,7 +46,7 @@ import java.util.Map;
  * Can only be called from pressing custom markers on the map.
  * Displays a form where the user can input data, and should verify user input
  * before sending data to the database.
- *
+ * <p>
  * Date and Time picker:spawns a date picker followed up by a time picker
  * that sends the data back to the previous fragment and stores it as a variable.
  * Code inspired from source:
@@ -75,7 +68,8 @@ public class AddFragment extends Fragment {
     private SimpleDateFormat mSimpleDateFormat;
     private Calendar mCalendar, mCalendarEnd;
     private TextView mDate, mDateEnd;
-    private String replyDateEnd, replyDateStart;
+    private Date replyDateEnd, replyDateStart;
+    private Spinner categorySpinner;
 
     private DatePickerDialog startDatePickerDialog, endDatePickerDialog;
     private TimePickerDialog startTimePickerDialog, endTimePickerDialog;
@@ -85,17 +79,18 @@ public class AddFragment extends Fragment {
 
 
     }
+
     View v;
 
-    EditText event_description;
+    EditText event_description, event_header;
     HorizontalNumberPicker attendeeLimit;
     private Button submit_button;
 
     DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
     DatabaseReference hostHostedEvents = FirebaseDatabase.getInstance().getReference(
             "users/" +
-            Profile.getCurrentProfile().getId() +
-            "hostedEvents");
+                    Profile.getCurrentProfile().getId() +
+                    "/hostedEvents");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,16 +99,31 @@ public class AddFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_add, container, false);
 
         submit_button = v.findViewById(R.id.btn_createEvent);
+
         mDateDecoratedButton = v.findViewById(R.id.btn_endTime);
         mDateEndDecoratedButton = v.findViewById(R.id.btn_startTime);
+
+        // Code responsible for creating the category spinner
+        List<String> list = new ArrayList<String>();
+        list.add("");
+        list.add("Restaurant");
+        list.add("Cinema");
+        list.add("Drinks");
+        list.add("Sports");
+        list.add("Other");
+
+        categorySpinner = v.findViewById(R.id.id_spinner_category);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item_custom, list);
+
+        dataAdapter.setDropDownViewResource(R.layout.drop_down_resource);
+
+        categorySpinner.setAdapter(dataAdapter);
 
         mSimpleDateFormat = new SimpleDateFormat("dd/MM/yyyy k:mm ", Locale.getDefault());
 
         mDate = v.findViewById(R.id.contentMain);
         mDateEnd = v.findViewById(R.id.contentMain2);
-
-        mDateDecoratedButton = v.findViewById(R.id.btn_startTime);
-        mDateEndDecoratedButton = v.findViewById(R.id.btn_endTime);
 
         mDateDecoratedButton.setOnClickListener(textListener);
         mDateEndDecoratedButton.setOnClickListener(textListener);
@@ -125,7 +135,8 @@ public class AddFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable final Bundle savedInstanceState) {
         // Assume view was created from a marker on the map and has a bundle with location information
-        event_description = v.findViewById(R.id.edit_txt_eventdescription);
+        event_description = v.findViewById(R.id.edit_txt_eventDescription);
+        event_header = v.findViewById(R.id.edit_txt_eventHeader);
         attendeeLimit = v.findViewById(R.id.np_channel_nr);
         attendeeLimit.setMin(1);
         attendeeLimit.setMax(8);
@@ -133,10 +144,24 @@ public class AddFragment extends Fragment {
         submit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createEventAtLocation();
+                if (formDataIsValid()) {
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Submit event")
+                            .setMessage("Submit event?")
+                            .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    createEventAtLocation();
+                                    startActivity(new Intent(getActivity(), MainActivity.class));
+                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show();
+                }
             }
         });
     }
+
     /**
      * Responsible for sending the form information to the database.
      */
@@ -154,17 +179,18 @@ public class AddFragment extends Fragment {
             return;
         }
 
-        if (formDataIsValid()) {
+
 
             // Add event information to the Map object and send it to the database class
-            eventMap.put("latitude", latitude);
-            eventMap.put("longitude", longitude);
+            eventMap.put("latitude", latitude.toString());
+            eventMap.put("longitude", longitude.toString());
+            eventMap.put("category", categorySpinner.getSelectedItem().toString().toLowerCase()); //TODO: Get spinner value for map
             eventMap.put("hostId", Profile.getCurrentProfile().getId());
-            eventMap.put("attendeeLimit", attendeeLimit.getValue());
-            eventMap.put("eventDescription", event_description.getText());
-            eventMap.put("eventHeader", "Event Header");
-            eventMap.put("eventStart", replyDateStart);
-            eventMap.put("eventEnd", replyDateEnd);
+            eventMap.put("attendeeLimit", String.valueOf(attendeeLimit.getValue()));
+            eventMap.put("eventDescription", event_description.getText().toString());
+            eventMap.put("eventHeader", event_header.getText().toString());
+            eventMap.put("eventStart", String.valueOf(replyDateStart.getTime()));
+            eventMap.put("eventEnd", String.valueOf(replyDateEnd.getTime()));
 
             System.out.println(eventMap);
 
@@ -175,14 +201,47 @@ public class AddFragment extends Fragment {
             // Add the event to the host' hosted events:
             hostHostedEvents.child(eventKey).setValue(eventMap);
 
-        } else {
-            System.out.println("Please fill in the reuired fields!");
-        }
+
     }
 
+    /**
+     * @return true if all input data is valid
+     * <p>
+     * Checks event Description, event Header, dates, number of people and that a category has been selected.
+     */
     private boolean formDataIsValid() {
-        return false;
+        if (event_header.getText().length() < 4 || event_header.getText().length() > 30) {
+            Toast.makeText(getContext(), "Invalid event header", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (event_description.getText().length() < 10 || event_description.getText().length() > 100) {
+            Toast.makeText(getContext(), "Invalid event description", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (replyDateStart == null) {
+            Toast.makeText(getContext(), "Invalid start date", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (replyDateEnd == null) {
+            Toast.makeText(getContext(), "Invalid starting date", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (replyDateStart.after(replyDateEnd)) {
+            Toast.makeText(getContext(), "Invalid end date", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (attendeeLimit.getValue() < 1 || attendeeLimit.getValue() > 8) {
+            Toast.makeText(getContext(), "Invalid amount of attendees", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (categorySpinner.getSelectedItem().toString().equals("")) {
+            Toast.makeText(getContext(), "Please select a category", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        return true;
     }
+
     /**
      * DatePicker Listeners
      */
@@ -242,7 +301,7 @@ public class AddFragment extends Fragment {
                 mCalendar.set(Calendar.MINUTE, minute);
 
                 mDate.setText(mSimpleDateFormat.format(mCalendar.getTime()));
-                replyDateStart = mSimpleDateFormat.format(mCalendar.getTime());
+                replyDateStart = mCalendar.getTime();
                 System.out.println("Date start : " + replyDateStart);
                 mCalendar = null;
                 selectingStartDate = false;
@@ -251,7 +310,7 @@ public class AddFragment extends Fragment {
                 mCalendarEnd.set(Calendar.MINUTE, minute);
 
                 mDateEnd.setText(mSimpleDateFormat.format(mCalendarEnd.getTime()));
-                replyDateEnd = mSimpleDateFormat.format(mCalendarEnd.getTime());
+                replyDateEnd = mCalendarEnd.getTime();
                 System.out.println("Date end : " + replyDateEnd);
                 mDateEnd = null;
                 selectingEndDate = false;
