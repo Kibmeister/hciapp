@@ -29,6 +29,6 @@ com_crashlytics_export_strings.xml
 ehthumbs.db
 Thumbs.db
 
-.gradle/*
+.gradle
 local.properties
-build/
+/build/
