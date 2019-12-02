@@ -85,6 +85,10 @@ public class AddFragment extends Fragment {
     private Button submit_button;
 
     DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("events");
+    DatabaseReference hostHostedEvents = FirebaseDatabase.getInstance().getReference(
+            "users/" +
+            Profile.getCurrentProfile().getId() +
+            "hostedEvents");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -152,23 +156,26 @@ public class AddFragment extends Fragment {
             eventMap.put("latitude", latitude);
             eventMap.put("longitude", longitude);
             eventMap.put("hostId", Profile.getCurrentProfile().getId());
-            List<String> attendeeIds = new ArrayList<>();
-            // eventMap.put("attendeeIds", attendeeIds.toString()); // TODO: Cant push lists to database, needs workaround
             eventMap.put("attendeeLimit", attendeeLimit.getValue());
             eventMap.put("eventDescription", event_description.getText());
             eventMap.put("eventHeader", "Event Header");
-            eventMap.put("timestamp", 1576188000);
+            eventMap.put("eventStart", replyDateStart);
+            eventMap.put("eventEnd", replyDateEnd);
 
             System.out.println(eventMap);
 
+            // Generate unique event ID, and save it in the events database section
             String eventKey = eventsRef.push().getKey();
             eventsRef.child(eventKey).setValue(eventMap);
+
+            // Add the event to the host' hosted events:
+            hostHostedEvents.child(eventKey).setValue(eventMap);
+
         } else {
             System.out.println("Please fill in the reuired fields!");
         }
     }
 
-    // TODO: Verify the form input before submitting to firebase
     private boolean formDataIsValid() {
         return false;
     }
@@ -241,7 +248,7 @@ public class AddFragment extends Fragment {
 
                 mDateEnd.setText(mSimpleDateFormat.format(mCalendarEnd.getTime()));
                 replyDateEnd = mSimpleDateFormat.format(mCalendarEnd.getTime());
-                System.out.println("Date end : " + replyDateStart);
+                System.out.println("Date end : " + replyDateEnd);
                 mDateEnd = null;
                 selectingEndDate = false;
             }

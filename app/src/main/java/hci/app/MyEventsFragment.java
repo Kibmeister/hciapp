@@ -7,12 +7,24 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.facebook.Profile;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -25,6 +37,9 @@ public class MyEventsFragment extends Fragment implements View.OnClickListener{
 
     private RadioButton buttonAttendees, buttonOwn;
     private RadioGroup radioGroup;
+    private RecyclerView recyclerView;
+    private FirebaseRecyclerAdapter adapter;
+    private LinearLayoutManager linearLayoutManager;
 
 
     public MyEventsFragment() {
@@ -45,6 +60,13 @@ public class MyEventsFragment extends Fragment implements View.OnClickListener{
         buttonAttendees = view.findViewById(R.id.btn_attendees);
         buttonOwn = view.findViewById(R.id.btn_own);
         radioGroup = view.findViewById(R.id.id_radiogroup);
+        recyclerView = view.findViewById(R.id.id_recyclerView);
+
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHasFixedSize(true);
+        fetch();
+
         buttonAttendees.setOnClickListener(this);
         buttonOwn.setOnClickListener(this);
     }
@@ -60,5 +82,26 @@ public class MyEventsFragment extends Fragment implements View.OnClickListener{
             radioGroup.setBackgroundResource(R.drawable.switch_layout_own);
         }
 
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+
+
+        CircleImageView icon;
+        TextView eventDescription;
+        LinearLayout parentLayout;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            icon = itemView.findViewById(R.id.id_image);
+            eventDescription = itemView.findViewById(R.id.id_item_event_description);
+            parentLayout = itemView.findViewById(R.id.id_parent_layout);
+
+        }
+    }
+
+    // fetch firebase event data
+    private void fetch() {
+        String userHostedRef = "/users/" + Profile.getCurrentProfile().getId() + "/hostedEvents";
     }
 }

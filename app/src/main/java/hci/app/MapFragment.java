@@ -144,6 +144,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     if (data != null) {
                         Marker marker;
+                        String markerIcon = "example";
+                        int iconInt = getResources().getIdentifier(markerIcon, "drawable", getActivity().getPackageName());
                         MarkerOptions markerOptions = new MarkerOptions()
                                 .position(new LatLng(
                                         Double.valueOf(data.child("latitude").getValue().toString()),
