@@ -92,8 +92,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 10));
+                if (location != null) {
+                    currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 10));
+                }
             }
         });
 
@@ -137,22 +139,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
      * @param mMap: Map variable for adding event pins to the map
      */
     private void loadEvents(final GoogleMap mMap) {
+        System.out.println();
         eventsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     if (data != null) {
                         Marker marker;
-                        String markerIconName = "example";
-                        int id = getResources().getIdentifier(markerIconName, "drawable", getActivity().getPackageName());
+
                         MarkerOptions markerOptions = new MarkerOptions()
                                 .position(new LatLng(
                                         Double.valueOf(data.child("latitude").getValue().toString()),
                                         Double.valueOf(data.child("longitude").getValue().toString())))
                                 .title(data.child("eventHeader").getValue().toString())
-                                .icon(BitmapDescriptorFactory.fromResource(id));
+                                .icon(BitmapDescriptorFactory.fromResource(
+                                        getResources().getIdentifier(
+                                                data.child("category").getValue().toString(),
+                                                "drawable",
+                                                getActivity().getPackageName())
+                                ));
                         marker = mMap.addMarker(markerOptions);
                         marker.setTag(data.getKey());
+                        System.out.println(markerOptions.getIcon());
                     }
                 }
             }

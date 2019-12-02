@@ -9,5 +9,6 @@
     <string name="title_activity_map">Map</string>
     <string name="facebookButton">FACEBOOK</string>
     <string name="emailButton">EMAIL</string>
+    <string name="spinnerHint">Category for the event</string>
 
 </resources>

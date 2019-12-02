@@ -37,14 +37,14 @@
 
 
         <RadioButton
-            android:id="@+id/btn_attendees"
+            android:id="@+id/btn_attending"
             android:layout_width="187dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/toggle_widget_attend"
             android:button="@null"
             android:gravity="center"
-            android:text="Attendees"
+            android:text="Attending"
             android:textColor="#FFFFFF" />
 
         <RadioButton
@@ -61,17 +61,33 @@
     </RadioGroup>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/id_recyclerView"
-        android:layout_width="306dp"
+        android:id="@+id/id_my_events_attending_events"
+        android:layout_width="match_parent"
         android:layout_height="438dp"
+        android:layout_marginTop="10dp"
+        android:paddingHorizontal="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.74">
+        app:layout_constraintVertical_bias="0.819">
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/id_my_events_hosted_events"
+        android:layout_width="match_parent"
+        android:layout_height="438dp"
+        android:layout_marginTop="10dp"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.819">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
