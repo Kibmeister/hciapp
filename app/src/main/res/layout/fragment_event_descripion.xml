@@ -3,13 +3,4 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EventDescripionFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="This fragment is responsible for displaying the description for specific a specific event.
-this should be view after creating an event,as well as when clicking on an event located on the map" />
-
-</FrameLayout>
+    tools:context=".EventDescripionFragment"/>

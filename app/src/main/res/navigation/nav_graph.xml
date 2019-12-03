@@ -63,7 +63,7 @@
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/myEventsFragment"
-        android:name="hci.app.MyEventsFragment"
+        android:name="hci.app.MyEvents.MyEventsFragment"
         android:label="fragment_my_events"
         tools:layout="@layout/fragment_my_events" >
         <action

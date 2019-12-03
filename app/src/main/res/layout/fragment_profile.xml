@@ -7,11 +7,6 @@
     tools:context=".ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="This fragment is responsible for showing the users profile and give him an overview
-over his personal details" />
 
     <ImageView
         android:id="@+id/profileImage"

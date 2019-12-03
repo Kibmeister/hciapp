@@ -1,4 +1,4 @@
-package hci.app;
+package hci.app.MyEvents;
 
 import android.widget.RelativeLayout;
 import android.widget.TextView;
