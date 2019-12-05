@@ -8,7 +8,7 @@ import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class EventModel {
+public class MyEventsModel {
 
     /* CircleImageView icon;
     TextView eventDescription, date, attendeeCounter, distance;
@@ -17,7 +17,7 @@ public class EventModel {
     public String iconName, eventHeader, eventStart, eventEnd, attendeeCounter, distance;
 
 
-    public EventModel(String iconName, String eventHeader, String eventStart, String attendeeCounter, String distance, String eventEnd) {
+    public MyEventsModel(String iconName, String eventHeader, String eventStart, String attendeeCounter, String distance, String eventEnd) {
         this.iconName = iconName;
         this.eventHeader = eventHeader;
         this.eventStart = eventStart;
@@ -26,7 +26,7 @@ public class EventModel {
         this.distance = distance;
     }
 
-    public EventModel() {
+    public MyEventsModel() {
     }
 
     public String getIconName() {

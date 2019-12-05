@@ -26,7 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import hci.app.EventDescription.EventDescripionFragment;
+import hci.app.EventDescription.EventDescriptionFragment;
 
 
 /**
@@ -213,7 +213,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             // Save the event id in bundle and start the EventDescriptionFragment
             Bundle bundle = new Bundle();
             bundle.putString("eventKey", marker.getTag().toString());
-            EventDescripionFragment fragment = new EventDescripionFragment();
+            EventDescriptionFragment fragment = new EventDescriptionFragment();
             fragment.setArguments(bundle);
 
             if (getFragmentManager() != null) {

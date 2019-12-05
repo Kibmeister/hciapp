@@ -1,11 +1,14 @@
 package hci.app.EventDescription;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -39,17 +42,17 @@ import hci.app.R;
  * @author Frederik Andersen
  * @author Kasper Borgbjerg
  */
-public class EventDescripionFragment extends Fragment implements View.OnClickListener{
+public class EventDescriptionFragment extends Fragment implements View.OnClickListener{
 
 
-    public EventDescripionFragment() {
+    public EventDescriptionFragment() {
         // Required empty public constructor
     }
 
     private String eventKey;
     DatabaseReference eventRef;
 
-    private TextView hostName, eventHeader, eventDescription, date, attendees;
+    private TextView hostName, eventHeader, eventDescription, date, attendees, attendees2;
     private ImageView hostProfileImage;
     private Button attendButton;
 
@@ -85,17 +88,15 @@ public class EventDescripionFragment extends Fragment implements View.OnClickLis
         this.eventDescription = v.findViewById(R.id.event_event_description);
         this.date = v.findViewById(R.id.event_date_start);
         this.attendees = v.findViewById(R.id.event_attendees);
+        this.attendees2 = v.findViewById(R.id.event_attendees2);
         this.hostProfileImage = v.findViewById(R.id.event_host_profile_image);
         this.attendButton = v.findViewById(R.id.event_attend_button);
         this.attendButton.setOnClickListener(this);
-
-        loadEventData();
 
         attendeeList = getActivity().findViewById(R.id.event_description_attendee_recycler_view);
         attendeeList.setHasFixedSize(true);
 
         attendeeRef = eventRef.child("/attendees/");
-        System.out.println(attendeeRef);
         options = new FirebaseRecyclerOptions.Builder<AttendeeEventModel>()
                 .setQuery(attendeeRef, AttendeeEventModel.class).build();
         adapter = new FirebaseRecyclerAdapter<AttendeeEventModel, AttendeeViewHolder>(options) {
@@ -117,26 +118,14 @@ public class EventDescripionFragment extends Fragment implements View.OnClickLis
             }
         };
 
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        attendeeList.setLayoutManager(manager);
+        adapter.startListening();
+        attendeeList.setAdapter(adapter);
 
-
-        /**
-         *                 viewHolder.eventHeader.setText(eventModel.getEventHeader());
-         *                 viewHolder.date.setText(eventModel.getDate());
-         *
-         *                 // TODO: attendeeCounter, distance, icon
-         *             }
-         *
-         *             @NonNull
-         *             @Override
-         *             public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-         *
-         *                 View v = LayoutInflater.from(getContext()).inflate(R.layout.layout_event_item, parent, false);
-         *
-         *                 return new ViewHolder(v);
-         *             }
-         *         };
-         */
+        loadEventData();
     }
+
 
     private void loadEventData() {
 
@@ -145,13 +134,14 @@ public class EventDescripionFragment extends Fragment implements View.OnClickLis
             @Override
             public void onDataChange(@NonNull DataSnapshot ds) {
 
-                hostName.setText(ds.getValue(EventModel.class).getHostName());
-                eventHeader.setText(ds.getValue(EventModel.class).getEventHeader());
-                eventDescription.setText(ds.getValue(EventModel.class).getEventDescription());
-                date.setText(createDateString(Long.valueOf(ds.getValue(EventModel.class).getEventStart())));
-                String imageUrl = "https://graph.facebook.com/" + ds.getValue(EventModel.class).getHostId() + "/picture?type=large";
+                hostName.setText(ds.getValue(EventDescriptionModel.class).getHostName());
+                eventHeader.setText(ds.getValue(EventDescriptionModel.class).getEventHeader());
+                eventDescription.setText(ds.getValue(EventDescriptionModel.class).getEventDescription());
+                date.setText(createDateString(Long.valueOf(ds.getValue(EventDescriptionModel.class).getEventStart())));
+                String imageUrl = "https://graph.facebook.com/" + ds.getValue(EventDescriptionModel.class).getHostId() + "/picture?type=large";
                 Picasso.get().load(imageUrl).into(hostProfileImage);
-                attendees.setText(ds.getValue(EventModel.class).getAttendeeLimit()); // TODO: Calculate attendees out of total?
+                attendees.setText(String.valueOf(adapter.getItemCount()));
+                attendees2.setText(ds.getValue(EventDescriptionModel.class).getAttendeeLimit()); // TODO: Calculate attendees out of total?
             }
 
             @Override
@@ -161,7 +151,6 @@ public class EventDescripionFragment extends Fragment implements View.OnClickLis
 
     }
 
-    //TODO: Fix date format
     private String createDateString(long dateLong) {
         Date date = new Date(dateLong);
         return
@@ -240,10 +229,26 @@ public class EventDescripionFragment extends Fragment implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case (R.id.event_attend_button): {
-                // Add the user to the list of attendees
-                String hostId = Profile.getCurrentProfile().getId();
-                eventRef.child("attendees/" + hostId + "/attendeeId").setValue(hostId);
-                eventRef.child("attendees/" + hostId + "/attendeeName").setValue(Profile.getCurrentProfile().getFirstName());
+                if (Integer.valueOf(attendees.getText().toString()) >= Integer.valueOf(attendees2.getText().toString())) {
+                    // No more room for attendees
+                    Toast.makeText(getContext(), "Event is full", Toast.LENGTH_LONG).show();
+                } else {
+                    // Add the user to the list of attendees
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Participate in event?")
+                            .setMessage("Do you wish to participate in this event?")
+                            .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    String hostId = Profile.getCurrentProfile().getId();
+                                    eventRef.child("attendees/" + hostId + "/attendeeId").setValue(hostId);
+                                    eventRef.child("attendees/" + hostId + "/attendeeName").setValue(Profile.getCurrentProfile().getFirstName());
+                                    Toast.makeText(getContext(), "Success!", Toast.LENGTH_LONG).show();
+                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show();
+                }
             }
         }
     }

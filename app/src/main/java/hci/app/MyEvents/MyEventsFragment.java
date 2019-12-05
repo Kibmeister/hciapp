@@ -36,8 +36,8 @@ public class MyEventsFragment extends Fragment implements View.OnClickListener{
     private RadioGroup radioGroup;
     private RecyclerView hostedEvents, attendeeEvents;
     private DatabaseReference hostedEventsRef, attendeeEventsRef;
-    private FirebaseRecyclerOptions<EventModel> hostedOptions, attendeeOptions;
-    private FirebaseRecyclerAdapter<EventModel, ViewHolder> hostedAdapter, attendeeAdapter;
+    private FirebaseRecyclerOptions<MyEventsModel> hostedOptions, attendeeOptions;
+    private FirebaseRecyclerAdapter<MyEventsModel, ViewHolder> hostedAdapter, attendeeAdapter;
 
 
     public MyEventsFragment() {
@@ -72,14 +72,14 @@ public class MyEventsFragment extends Fragment implements View.OnClickListener{
         hostedEventsRef = FirebaseDatabase.getInstance().getReference().child("users/" + Profile.getCurrentProfile().getId() + "/hostedEvents");
         attendeeEventsRef = FirebaseDatabase.getInstance().getReference().child("users/" + Profile.getCurrentProfile().getId() + "/attendeeEvents");
 
-        hostedOptions = new FirebaseRecyclerOptions.Builder<EventModel>()
-                .setQuery(hostedEventsRef, EventModel.class).build();
-        attendeeOptions = new FirebaseRecyclerOptions.Builder<EventModel>()
-                .setQuery(attendeeEventsRef, EventModel.class).build();
+        hostedOptions = new FirebaseRecyclerOptions.Builder<MyEventsModel>()
+                .setQuery(hostedEventsRef, MyEventsModel.class).build();
+        attendeeOptions = new FirebaseRecyclerOptions.Builder<MyEventsModel>()
+                .setQuery(attendeeEventsRef, MyEventsModel.class).build();
 
-        hostedAdapter = new FirebaseRecyclerAdapter<EventModel, ViewHolder>(hostedOptions) {
+        hostedAdapter = new FirebaseRecyclerAdapter<MyEventsModel, ViewHolder>(hostedOptions) {
             @Override
-            protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull EventModel eventModel) {
+            protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull MyEventsModel eventModel) {
 
                 viewHolder.eventHeader.setText(eventModel.getEventHeader());
                 viewHolder.date.setText(eventModel.getDate());
@@ -97,9 +97,9 @@ public class MyEventsFragment extends Fragment implements View.OnClickListener{
             }
         };
 
-        attendeeAdapter = new FirebaseRecyclerAdapter<EventModel, ViewHolder>(attendeeOptions) {
+        attendeeAdapter = new FirebaseRecyclerAdapter<MyEventsModel, ViewHolder>(attendeeOptions) {
             @Override
-            protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull EventModel eventModel) {
+            protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull MyEventsModel eventModel) {
                 viewHolder.eventHeader.setText(eventModel.getEventHeader());
 
                 // TODO: attendeeCounter, distance, icon, date

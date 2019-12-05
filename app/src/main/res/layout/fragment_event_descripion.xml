@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EventDescription.EventDescripionFragment">
+    tools:context=".EventDescription.EventDescriptionFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,6 +36,14 @@
                     android:layout_margin="15dp"
                     android:text="Host name"
                     android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/event_attend_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_margin="20dp"
+                    android:text="Attend" />
             </LinearLayout>
         </LinearLayout>
 
@@ -91,7 +99,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -103,30 +111,49 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="Attendees" />
+                    android:text="Attendees:" />
 
                 <TextView
                     android:id="@+id/event_attendees"
-                    android:layout_width="wrap_content"
+                    android:layout_width="21dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:layout_marginRight="0dp"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:text="1" />
+
+                <TextView
+                    android:id="@+id/text_view5234654"
+                    android:layout_width="21dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_weight="1"
+                    android:text="Slots:" />
+
+                <TextView
+                    android:id="@+id/event_attendees2"
+                    android:layout_width="21dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_weight="1"
+                    android:text="1" />
+
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/event_description_attendee_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="358dp"
+                android:paddingHorizontal="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.819" />
         </LinearLayout>
-
-        <Button
-            android:id="@+id/event_attend_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_margin="20dp"
-            android:text="Attend" />
 
     </LinearLayout>
 

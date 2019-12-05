@@ -2,11 +2,11 @@ package hci.app.EventDescription;
 
 import java.util.Date;
 
-public class EventModel {
+public class EventDescriptionModel {
 
     String hostName, eventHeader, eventDescription, eventStart, attendeeLimit, hostId;
 
-    public EventModel(String hostName, String eventHeader, String eventDescription, String eventStart, String attendeeLimit, String hostId) {
+    public EventDescriptionModel(String hostName, String eventHeader, String eventDescription, String eventStart, String attendeeLimit, String hostId) {
         this.hostName = hostName;
         this.eventHeader = eventHeader;
         this.eventDescription = eventDescription;
@@ -15,7 +15,7 @@ public class EventModel {
         this.hostId = hostId;
     }
 
-    public EventModel() {
+    public EventDescriptionModel() {
     }
 
     public String getHostName() {

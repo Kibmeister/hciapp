@@ -62,7 +62,7 @@
 
     <fragment
         android:id="@+id/eventDescripionFragment"
-        android:name="hci.app.EventDescription.EventDescripionFragment"
+        android:name="hci.app.EventDescription.EventDescriptionFragment"
         android:label="fragment_event_descripion"
         tools:layout="@layout/fragment_event_descripion" />
 </navigation>
