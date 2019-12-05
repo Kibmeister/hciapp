@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.facebook.Profile;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +39,7 @@ import hci.app.R;
  * @author Frederik Andersen
  * @author Kasper Borgbjerg
  */
-public class EventDescripionFragment extends Fragment {
+public class EventDescripionFragment extends Fragment implements View.OnClickListener{
 
 
     public EventDescripionFragment() {
@@ -48,6 +52,12 @@ public class EventDescripionFragment extends Fragment {
     private TextView hostName, eventHeader, eventDescription, date, attendees;
     private ImageView hostProfileImage;
     private Button attendButton;
+
+    private RecyclerView attendeeList;
+    private DatabaseReference attendeeRef;
+    private FirebaseRecyclerOptions<AttendeeEventModel> options;
+    private FirebaseRecyclerAdapter<AttendeeEventModel, AttendeeViewHolder> adapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,15 +87,58 @@ public class EventDescripionFragment extends Fragment {
         this.attendees = v.findViewById(R.id.event_attendees);
         this.hostProfileImage = v.findViewById(R.id.event_host_profile_image);
         this.attendButton = v.findViewById(R.id.event_attend_button);
+        this.attendButton.setOnClickListener(this);
 
         loadEventData();
+
+        attendeeList = getActivity().findViewById(R.id.event_description_attendee_recycler_view);
+        attendeeList.setHasFixedSize(true);
+
+        attendeeRef = eventRef.child("/attendees/");
+        System.out.println(attendeeRef);
+        options = new FirebaseRecyclerOptions.Builder<AttendeeEventModel>()
+                .setQuery(attendeeRef, AttendeeEventModel.class).build();
+        adapter = new FirebaseRecyclerAdapter<AttendeeEventModel, AttendeeViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull AttendeeViewHolder attendeeViewHolder, int i, @NonNull AttendeeEventModel attendeeEventModel) {
+                attendeeViewHolder.attendeeName.setText(attendeeEventModel.getAttendeeName());
+                Glide.with(getContext())
+                        .load("https://graph.facebook.com/" + attendeeEventModel.attendeeId + "/picture?type=large")
+                        .into(attendeeViewHolder.attendeeImage);
+            }
+
+            @NonNull
+            @Override
+            public AttendeeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+                View v = LayoutInflater.from(getContext()).inflate(R.layout.event_description_attendee_layout, parent, false);
+
+                return new AttendeeViewHolder(v);
+            }
+        };
+
+
+
+        /**
+         *                 viewHolder.eventHeader.setText(eventModel.getEventHeader());
+         *                 viewHolder.date.setText(eventModel.getDate());
+         *
+         *                 // TODO: attendeeCounter, distance, icon
+         *             }
+         *
+         *             @NonNull
+         *             @Override
+         *             public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+         *
+         *                 View v = LayoutInflater.from(getContext()).inflate(R.layout.layout_event_item, parent, false);
+         *
+         *                 return new ViewHolder(v);
+         *             }
+         *         };
+         */
     }
 
     private void loadEventData() {
-
-        final String hostId = new String();
-
-        System.out.println(eventRef);
 
         eventRef.addValueEventListener(new ValueEventListener() {
 
@@ -180,6 +233,18 @@ public class EventDescripionFragment extends Fragment {
                 return "December";
             default:
                 return "";
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case (R.id.event_attend_button): {
+                // Add the user to the list of attendees
+                String hostId = Profile.getCurrentProfile().getId();
+                eventRef.child("attendees/" + hostId + "/attendeeId").setValue(hostId);
+                eventRef.child("attendees/" + hostId + "/attendeeName").setValue(Profile.getCurrentProfile().getFirstName());
+            }
         }
     }
 }

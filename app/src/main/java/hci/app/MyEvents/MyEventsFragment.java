@@ -132,10 +132,14 @@ public class MyEventsFragment extends Fragment implements View.OnClickListener{
         if(view.getId() == R.id.btn_attending){
             System.out.println("Button attendees pressed");
             radioGroup.setBackgroundResource(R.drawable.switch_layout_attendees);
+            hostedEvents.setAlpha(0);
+            attendeeEvents.setAlpha(1);
 
         } else if(view.getId() == R.id.btn_own){
             System.out.println("Button own pressed");
             radioGroup.setBackgroundResource(R.drawable.switch_layout_own);
+            attendeeEvents.setAlpha(0);
+            hostedEvents.setAlpha(1);
         }
 
     }

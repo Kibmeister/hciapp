@@ -175,13 +175,13 @@ public class AddFragment extends Fragment {
             return;
         }
 
-
+            String hostId = Profile.getCurrentProfile().getId();
 
             // Add event information to the Map object and send it to the database class
             eventMap.put("latitude", latitude.toString());
             eventMap.put("longitude", longitude.toString());
             eventMap.put("category", categorySpinner.getSelectedItem().toString().toLowerCase());
-            eventMap.put("hostId", Profile.getCurrentProfile().getId());
+            eventMap.put("hostId", hostId);
             eventMap.put("attendeeLimit", String.valueOf(attendeeLimit.getValue()));
             eventMap.put("eventDescription", event_description.getText().toString());
             eventMap.put("eventHeader", event_header.getText().toString());
@@ -193,12 +193,15 @@ public class AddFragment extends Fragment {
             // Generate unique event ID, and save it in the events database section
             String eventKey = eventsRef.push().getKey();
             eventMap.put("eventKey", eventKey);
-            eventsRef.child(eventKey).setValue(eventMap);
+            DatabaseReference eventRef = eventsRef.child(eventKey);
+            eventRef.setValue(eventMap);
+            // Add the host to the list of attendees
+            DatabaseReference attendeeRef = eventRef.child("attendees" + hostId);
+            attendeeRef.child("/attendeeName").setValue(Profile.getCurrentProfile().getFirstName());
+            attendeeRef.child("/attendeeId").setValue(hostId);
 
             // Add the event to the host' hosted events:
             hostHostedEvents.child(eventKey).setValue(eventMap);
-
-
     }
 
     /**
