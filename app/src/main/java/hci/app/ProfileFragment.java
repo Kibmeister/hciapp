@@ -1,32 +1,25 @@
 package hci.app;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 
 /**
@@ -67,15 +60,28 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         loadUserData();
 
         // Set button onClickListeners
-        Button settingsButton = view.findViewById(R.id.settingsButton);
-        settingsButton.setOnClickListener(this);
+        Button logoutButton = view.findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.settingsButton) {
-            System.out.println("Settings fragment");
-            Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_settingsFragment);
+        System.out.println("blablabla");
+        System.out.println(R.id.logoutButton);
+        System.out.println(v.getId());
+        if (v.getId() == R.id.logoutButton) {
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Log out")
+                    .setMessage("Do you want to log out?")
+                    .setPositiveButton("Log out", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            LoginManager.getInstance().logOut();
+                            startActivity(new Intent(getActivity(), LoginActivity.class));
+                        }
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
         }
     }
 

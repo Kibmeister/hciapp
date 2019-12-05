@@ -2,10 +2,7 @@ package hci.app;
 
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -17,8 +14,6 @@ import androidx.fragment.app.Fragment;
 import android.view.*;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.internal.GoogleApiManager;
-import com.google.android.gms.dynamic.IObjectWrapper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.*;
@@ -31,11 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONObject;
-
-import java.io.File;
-import java.util.List;
-import java.util.Map;
+import hci.app.EventDescription.EventDescripionFragment;
 
 
 /**
@@ -219,10 +210,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             }
         } else {
             // Event marker is pressed, send to event description page
+            // Save the event id in bundle and start the EventDescriptionFragment
+            Bundle bundle = new Bundle();
+            bundle.putString("eventKey", marker.getTag().toString());
+            EventDescripionFragment fragment = new EventDescripionFragment();
+            fragment.setArguments(bundle);
 
-            // TODO: Implement event description page loading with event id.
-            System.out.println("Event Marker pressed!");
-            Toast.makeText(getContext(), marker.getTag().toString(), Toast.LENGTH_LONG).show();
+            if (getFragmentManager() != null) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.nav_host_fragment, fragment)
+                        .commit();
+            }
         }
     }
 }

@@ -56,10 +56,6 @@ import java.util.Map;
  * @author Kasper Borgbjerg
  */
 
-
-// TODO: Verify FORM data
-
-
 public class AddFragment extends Fragment {
     // get a reference to the component
 
@@ -184,7 +180,7 @@ public class AddFragment extends Fragment {
             // Add event information to the Map object and send it to the database class
             eventMap.put("latitude", latitude.toString());
             eventMap.put("longitude", longitude.toString());
-            eventMap.put("category", categorySpinner.getSelectedItem().toString().toLowerCase()); //TODO: Get spinner value for map
+            eventMap.put("category", categorySpinner.getSelectedItem().toString().toLowerCase());
             eventMap.put("hostId", Profile.getCurrentProfile().getId());
             eventMap.put("attendeeLimit", String.valueOf(attendeeLimit.getValue()));
             eventMap.put("eventDescription", event_description.getText().toString());
@@ -196,6 +192,7 @@ public class AddFragment extends Fragment {
 
             // Generate unique event ID, and save it in the events database section
             String eventKey = eventsRef.push().getKey();
+            eventMap.put("eventKey", eventKey);
             eventsRef.child(eventKey).setValue(eventMap);
 
             // Add the event to the host' hosted events:
